@@ -4,65 +4,60 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { auth } from "../../firebase/firebase.init";
-
-const googleProvider = new GoogleAuthProvider();
+import { auth } from "../../firebase/firebase.init.js";
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const createUser = (email, password) => {
-    setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password);
-  };
-
-  const signIn = (email, password) => {
-    setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password);
-  };
-
-  const signInWithGoogle = () => {
-    setLoading(true);
-    return signInWithPopup(auth, googleProvider);
-  };
-
-  const updateUserProfile = (profileInfo) => {
-    return updateProfile(auth.currentUser, profileInfo);
-  };
-
-  const logOut = () => {
-    setLoading(true);
-    return signOut(auth);
-  };
+  const [user, setUser] = useState(null); // Track the current authenticated user
+  const [loading, setLoading] = useState(true); // Track if the auth state is still loading
 
   useEffect(() => {
-    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      console.log("user in the auth state change", currentUser);
       setLoading(false);
     });
-
-    return () => {
-      unSubscribe();
-    };
+    // Cleanup the listener when the component unmounts
+    return () => unsubscribe();
   }, []);
 
-  const authInfo = {
-    user,
-    loading,
-    createUser,
-    signIn,
-    signInWithGoogle,
-    updateUserProfile,
-    logOut,
+  // Function to register a new user with email and password
+  const register = (email, password) =>
+    createUserWithEmailAndPassword(auth, email, password);
+
+  // Function to login existing user
+  const login = (email, password) =>
+    signInWithEmailAndPassword(auth, email, password);
+
+  const resetPassword = (email) => sendPasswordResetEmail(auth, email);
+
+  // Function to login with Google using popup
+  const googleLogin = () => signInWithPopup(auth, new GoogleAuthProvider());
+
+  const updateUserProfile = (name, photoURL) => {
+    return updateProfile(auth.currentUser, {
+      displayName: name,
+      photoURL: photoURL,
+    });
   };
 
+  // Function to log out user
+  const logout = () => signOut(auth);
+  const authInfo = {
+    user,
+    register,
+    updateUserProfile,
+    login,
+    googleLogin,
+    loading,
+    setLoading,
+    resetPassword,
+    logout,
+  };
   return <AuthContext value={authInfo}>{children}</AuthContext>;
 };
 

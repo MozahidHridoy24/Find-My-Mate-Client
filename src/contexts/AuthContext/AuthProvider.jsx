@@ -10,7 +10,7 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { auth } from "../../firebase/firebase.init.js";
+import { auth } from "../../firebase/firebase.config.js";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // Track the current authenticated user

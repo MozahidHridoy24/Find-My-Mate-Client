@@ -4,6 +4,9 @@ import Home from "../pages/Home/Home";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import DashboardLayout from "../layouts/DashboardLayout";
+import PrivateRoute from "./PrivateRoute";
+import AdminDashboard from "../pages/Dashboard/Admin/AdminDashboard";
+import EditBiodata from "../pages/Dashboard/User/EditBiodata";
 
 export const router = createBrowserRouter([
   {
@@ -17,17 +20,33 @@ export const router = createBrowserRouter([
         element: <Home></Home>,
       },
       {
-        path: "/login",
+        path: "login",
         element: <Login></Login>,
       },
       {
-        path: "/register",
+        path: "register",
         element: <Register></Register>,
       },
     ],
   },
   {
     path: "/dashboard",
-    element: <DashboardLayout></DashboardLayout>,
+    element: (
+      <PrivateRoute>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoute>
+    ),
+    children: [
+      // admin routes
+      {
+        path: "admin-home",
+        element: <AdminDashboard></AdminDashboard>,
+      },
+      // user routes
+      {
+        path: "edit-biodata",
+        element: <EditBiodata></EditBiodata>,
+      },
+    ],
   },
 ]);

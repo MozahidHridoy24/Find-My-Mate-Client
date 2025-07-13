@@ -52,7 +52,7 @@ const DashboardLayout = () => {
           )}
 
           {/* Premium routes */}
-          {role === "premium-User" && (
+          {/* {role === "premium-User" && (
             <>
               <NavLink
                 to="/dashboard/edit-biodata"
@@ -85,7 +85,7 @@ const DashboardLayout = () => {
                 Premium Tools
               </NavLink>
             </>
-          )}
+          )} */}
 
           {/* Admin routes */}
           {role === "admin" && (

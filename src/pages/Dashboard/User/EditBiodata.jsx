@@ -13,6 +13,7 @@ const EditBiodata = () => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
 
+  // Fetch existing biodata for logged-in user
   const { data: biodata, isLoading } = useQuery({
     queryKey: ["biodata", user?.email],
     queryFn: async () => {
@@ -26,8 +27,12 @@ const EditBiodata = () => {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm();
+
+  // Watch the imageFile input for changes
+  const imageFile = watch("imageFile");
 
   // Populate form values if biodata exists
   useEffect(() => {
@@ -38,12 +43,38 @@ const EditBiodata = () => {
     }
   }, [biodata, setValue]);
 
-  // Submit handler (PUT only)
+  // ImgBB API key (replace with your own)
+  const imgbbApiKey = import.meta.env.VITE_image_upload_key;
+
   const onSubmit = async (data) => {
     try {
       data.email = user?.email;
 
-      await axiosSecure.put("/biodatas", data); // ✅ PUT request only
+      // If user uploads a new image file, upload it to ImgBB
+      if (data.imageFile && data.imageFile.length > 0) {
+        const formData = new FormData();
+        formData.append("image", data.imageFile[0]);
+
+        const res = await fetch(
+          `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+        const result = await res.json();
+
+        if (result.success) {
+          data.image = result.data.url; // Use uploaded image URL
+        } else {
+          throw new Error("Image upload failed");
+        }
+      }
+
+      // Remove imageFile before sending to backend
+      delete data.imageFile;
+
+      await axiosSecure.put("/biodatas", data);
 
       Swal.fire("Success", "Biodata saved successfully!", "success");
       queryClient.invalidateQueries(["biodata", user?.email]);
@@ -85,19 +116,44 @@ const EditBiodata = () => {
             {...register("name", { required: true })}
             className="input input-bordered w-full"
           />
+          {errors.name && <p className="text-red-500">Required</p>}
         </div>
 
-        {/* Profile Image Link */}
+        {/* Profile Image Link (manual) */}
         <div>
-          <label className="block font-semibold">Profile Image Link</label>
+          <label className="block font-semibold">
+            Profile Image Link (or upload below)
+          </label>
           <input
             type="url"
-            {...register("image", { required: true })}
+            {...register("image")}
+            placeholder="Enter image URL"
             className="input input-bordered w-full"
           />
+          {errors.image && (
+            <p className="text-red-500">
+              Please enter valid URL or upload file
+            </p>
+          )}
         </div>
 
-        {/* DOB */}
+        {/* Profile Image Upload */}
+        <div>
+          <label className="block font-semibold">Or Upload Profile Image</label>
+          <input
+            type="file"
+            accept="image/*"
+            {...register("imageFile")}
+            className="file-input file-input-bordered w-full"
+          />
+          {imageFile && imageFile.length > 0 && (
+            <p className="mt-1 text-green-600 text-sm">
+              Image file selected: {imageFile[0].name}
+            </p>
+          )}
+        </div>
+
+        {/* Date of Birth */}
         <div>
           <label className="block font-semibold">Date of Birth</label>
           <input
@@ -105,6 +161,7 @@ const EditBiodata = () => {
             {...register("dob", { required: true })}
             className="input input-bordered w-full"
           />
+          {errors.dob && <p className="text-red-500">Required</p>}
         </div>
 
         {/* Height */}
@@ -119,6 +176,7 @@ const EditBiodata = () => {
             <option value="5'5">5'5</option>
             <option value="6'0">6'0</option>
           </select>
+          {errors.height && <p className="text-red-500">Required</p>}
         </div>
 
         {/* Weight */}
@@ -133,6 +191,7 @@ const EditBiodata = () => {
             <option value="60kg">60kg</option>
             <option value="70kg">70kg</option>
           </select>
+          {errors.weight && <p className="text-red-500">Required</p>}
         </div>
 
         {/* Age */}
@@ -143,6 +202,7 @@ const EditBiodata = () => {
             {...register("age", { required: true })}
             className="input input-bordered w-full"
           />
+          {errors.age && <p className="text-red-500">Required</p>}
         </div>
 
         {/* Occupation */}
@@ -157,6 +217,7 @@ const EditBiodata = () => {
             <option value="Teacher">Teacher</option>
             <option value="Doctor">Doctor</option>
           </select>
+          {errors.occupation && <p className="text-red-500">Required</p>}
         </div>
 
         {/* Race */}
@@ -171,6 +232,7 @@ const EditBiodata = () => {
             <option value="Medium">Medium</option>
             <option value="Dark">Dark</option>
           </select>
+          {errors.race && <p className="text-red-500">Required</p>}
         </div>
 
         {/* Father's Name */}
@@ -181,6 +243,7 @@ const EditBiodata = () => {
             {...register("fatherName", { required: true })}
             className="input input-bordered w-full"
           />
+          {errors.fatherName && <p className="text-red-500">Required</p>}
         </div>
 
         {/* Mother's Name */}
@@ -191,6 +254,7 @@ const EditBiodata = () => {
             {...register("motherName", { required: true })}
             className="input input-bordered w-full"
           />
+          {errors.motherName && <p className="text-red-500">Required</p>}
         </div>
 
         {/* Permanent Division */}
@@ -209,6 +273,7 @@ const EditBiodata = () => {
             <option value="Mymensingh">Mymensingh</option>
             <option value="Sylhet">Sylhet</option>
           </select>
+          {errors.permanentDivision && <p className="text-red-500">Required</p>}
         </div>
 
         {/* Present Division */}
@@ -227,6 +292,7 @@ const EditBiodata = () => {
             <option value="Mymensingh">Mymensingh</option>
             <option value="Sylhet">Sylhet</option>
           </select>
+          {errors.presentDivision && <p className="text-red-500">Required</p>}
         </div>
 
         {/* Expected Partner Age */}
@@ -237,6 +303,9 @@ const EditBiodata = () => {
             {...register("expectedPartnerAge", { required: true })}
             className="input input-bordered w-full"
           />
+          {errors.expectedPartnerAge && (
+            <p className="text-red-500">Required</p>
+          )}
         </div>
 
         {/* Expected Partner Height */}
@@ -251,6 +320,9 @@ const EditBiodata = () => {
             <option value="5'5">5'5</option>
             <option value="6'0">6'0</option>
           </select>
+          {errors.expectedPartnerHeight && (
+            <p className="text-red-500">Required</p>
+          )}
         </div>
 
         {/* Expected Partner Weight */}
@@ -265,6 +337,9 @@ const EditBiodata = () => {
             <option value="60kg">60kg</option>
             <option value="70kg">70kg</option>
           </select>
+          {errors.expectedPartnerWeight && (
+            <p className="text-red-500">Required</p>
+          )}
         </div>
 
         {/* Email (readonly) */}
@@ -286,6 +361,7 @@ const EditBiodata = () => {
             {...register("mobile", { required: true })}
             className="input input-bordered w-full"
           />
+          {errors.mobile && <p className="text-red-500">Required</p>}
         </div>
 
         {/* Submit Button */}

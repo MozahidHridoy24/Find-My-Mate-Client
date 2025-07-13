@@ -7,6 +7,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import PrivateRoute from "./PrivateRoute";
 import AdminDashboard from "../pages/Dashboard/Admin/AdminDashboard";
 import EditBiodata from "../pages/Dashboard/User/EditBiodata";
+import ViewBiodata from "../pages/Dashboard/User/ViewBiodata";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: "edit-biodata",
         element: <EditBiodata></EditBiodata>,
+      },
+      {
+        path: "view-biodata",
+        element: <ViewBiodata></ViewBiodata>,
       },
     ],
   },

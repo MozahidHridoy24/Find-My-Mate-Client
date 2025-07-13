@@ -1,11 +1,16 @@
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import { useState } from "react";
-import { FaBars, FaTimes, FaSun, FaMoon } from "react-icons/fa";
-import { useTheme } from "../hooks/useTheme";
+import { FaBars, FaTimes } from "react-icons/fa";
+import useAuth from "../hooks/useAuth";
+
+const LoadingSpinner = () => (
+  <div className="w-6 h-6 border-4 border-rose-700 border-t-purple-700 rounded-full animate-spin"></div>
+);
 
 const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { theme, toggleTheme } = useTheme();
+  const { user, logout, loading } = useAuth();
+  const navigate = useNavigate();
 
   const navItems = (
     <>
@@ -13,8 +18,8 @@ const Navbar = () => {
         <NavLink
           to="/"
           className={({ isActive }) =>
-            `hover:text-primary transition ${
-              isActive ? "text-primary font-semibold" : ""
+            `hover:text-rose-700 transition ${
+              isActive ? "text-rose-700 font-semibold" : "text-gray-800"
             }`
           }
         >
@@ -25,8 +30,8 @@ const Navbar = () => {
         <NavLink
           to="/biodatas"
           className={({ isActive }) =>
-            `hover:text-primary transition ${
-              isActive ? "text-primary font-semibold" : ""
+            `hover:text-rose-700 transition ${
+              isActive ? "text-rose-700 font-semibold" : "text-gray-800"
             }`
           }
         >
@@ -37,8 +42,8 @@ const Navbar = () => {
         <NavLink
           to="/about"
           className={({ isActive }) =>
-            `hover:text-primary transition ${
-              isActive ? "text-primary font-semibold" : ""
+            `hover:text-rose-700 transition ${
+              isActive ? "text-rose-700 font-semibold" : "text-gray-800"
             }`
           }
         >
@@ -49,125 +54,140 @@ const Navbar = () => {
         <NavLink
           to="/contact"
           className={({ isActive }) =>
-            `hover:text-primary transition ${
-              isActive ? "text-primary font-semibold" : ""
+            `hover:text-rose-700 transition ${
+              isActive ? "text-rose-700 font-semibold" : "text-gray-800"
             }`
           }
         >
           Contact Us
         </NavLink>
       </li>
+      {user && (
+        <li>
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) =>
+              `hover:text-rose-700 transition ${
+                isActive ? "text-rose-700 font-semibold" : "text-gray-800"
+              }`
+            }
+          >
+            Dashboard
+          </NavLink>
+        </li>
+      )}
     </>
   );
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  };
 
   return (
     <>
-      {/* Sticky Navbar */}
-      <nav className="bg-background bg-white text-foreground border-b border-border shadow-sm sticky z-[1000] top-0">
+      {/* Navbar */}
+      <nav className="bg-white border-b border-gray-200 shadow sticky top-0 z-[1000]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Mobile: Menu Icon (left) */}
+            {/* Mobile Menu Icon */}
             <div className="flex md:hidden">
               <button
                 onClick={() => setIsDrawerOpen(!isDrawerOpen)}
-                className="text-2xl p-2 focus:outline-none focus:ring-2 focus:ring-primary rounded"
+                className="text-2xl text-purple-700 p-2 focus:outline-none"
                 aria-label="Toggle menu"
               >
                 {isDrawerOpen ? <FaTimes /> : <FaBars />}
               </button>
             </div>
 
-            {/* Mobile: Logo centered */}
+            {/* Logo */}
             <Link
               to="/"
-              className="absolute md:hidden left-1/2 -translate-x-1/2 text-xl font-bold flex items-center gap-2 text-primary md:static md:translate-x-0"
+              className="absolute md:static left-1/2 md:left-0 -translate-x-1/2 md:translate-x-0 text-xl font-bold text-rose-700 flex items-center gap-2"
             >
-              💖 FindMyMate
+              💜 FindMyMate
             </Link>
 
-            {/* Desktop: Left side logo */}
-            <div className="hidden md:flex items-center">
-              <Link
-                to="/"
-                className="text-xl font-bold flex items-center gap-2 text-primary"
-              >
-                💖 FindMyMate
-              </Link>
-            </div>
-
-            {/* Desktop: Right nav + buttons + theme */}
-            <div className="hidden md:flex items-center space-x-4 font-medium">
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-6 font-medium">
               <ul className="flex space-x-6">{navItems}</ul>
 
-              {/* Buttons */}
-              <NavLink
-                to="/login"
-                className={({ isActive }) =>
-                  `px-2 py-2 rounded-md border border-primary text-primary font-semibold hover:bg-primary  transition ${
-                    isActive ? "bg-primary text-black" : ""
-                  }`
-                }
-              >
-                Login
-              </NavLink>
+              {/* Auth Buttons */}
+              {loading ? (
+                <LoadingSpinner />
+              ) : !user ? (
+                <>
+                  <NavLink
+                    to="/login"
+                    className="px-4 py-2 rounded-lg border-2 border-rose-700 text-rose-700 font-semibold hover:bg-rose-700 hover:text-white transition"
+                  >
+                    Login
+                  </NavLink>
 
-              <NavLink
-                to="/register"
-                className={({ isActive }) =>
-                  `px-2 py-2 rounded-md bg-primary text-black font-semibold hover:bg-primary/90 transition ${
-                    isActive ? "opacity-80" : ""
-                  }`
-                }
-              >
-                Register
-              </NavLink>
-
-              {/* Theme toggle */}
-              <button
-                onClick={toggleTheme}
-                className="text-xl hover:text-primary transition p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary"
-                aria-label="Toggle theme"
-              >
-                {theme === "dark" ? <FaSun /> : <FaMoon />}
-              </button>
+                  <NavLink
+                    to="/register"
+                    className="px-4 py-2 rounded-lg bg-purple-700 text-white font-semibold hover:bg-purple-800 transition"
+                  >
+                    Register
+                  </NavLink>
+                </>
+              ) : (
+                <div className="flex items-center gap-4">
+                  <img
+                    src={user.photoURL || "https://via.placeholder.com/32"}
+                    alt="User Avatar"
+                    className="w-8 h-8 rounded-full object-cover border-2 border-rose-700"
+                  />
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-2 rounded-lg border-2 border-rose-700 text-rose-700 font-semibold hover:bg-rose-700 hover:text-white transition"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
 
-            {/* Mobile: Right theme toggle + login */}
+            {/* Mobile Right */}
             <div className="flex md:hidden items-center gap-4">
-              <button
-                onClick={toggleTheme}
-                className="text-xl hover:text-primary transition p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary"
-                aria-label="Toggle theme"
-              >
-                {theme === "dark" ? <FaSun /> : <FaMoon />}
-              </button>
-              <NavLink
-                to="/login"
-                className="font-medium text-sm hover:text-primary"
-              >
-                Login
-              </NavLink>
+              {loading ? (
+                <LoadingSpinner />
+              ) : !user ? (
+                <NavLink
+                  to="/login"
+                  className="text-sm font-semibold text-rose-700 hover:text-purple-700"
+                >
+                  Login
+                </NavLink>
+              ) : (
+                <button
+                  onClick={logout}
+                  className="text-sm font-semibold text-rose-700 hover:text-purple-700"
+                >
+                  Logout
+                </button>
+              )}
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Drawer: LEFT side, under navbar */}
+      {/* Mobile Drawer */}
       <div
-        className={`fixed top-16 left-0 h-[calc(100vh-4rem)] w-[40%] bg-background shadow-lg transform transition-transform duration-300 z-[1000] ${
+        className={`fixed top-16 left-0 h-[calc(100vh-4rem)] w-2/3 bg-white shadow-lg transform transition-transform duration-300 z-[1000] ${
           isDrawerOpen ? "translate-x-0" : "-translate-x-full"
         }`}
-        aria-label="Mobile navigation drawer"
       >
-        <ul className="flex flex-col gap-5 p-6 font-medium">{navItems}</ul>
+        <ul className="flex flex-col gap-6 p-6 font-medium text-rose-700">
+          {navItems}
+        </ul>
       </div>
 
-      {/* Overlay for mobile drawer */}
+      {/* Overlay for Drawer */}
       {isDrawerOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-10 z-[998] md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-5 z-[998] md:hidden"
           onClick={() => setIsDrawerOpen(false)}
-          aria-hidden="true"
         />
       )}
     </>

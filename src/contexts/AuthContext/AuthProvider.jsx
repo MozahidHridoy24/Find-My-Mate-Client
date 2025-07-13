@@ -26,7 +26,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   // Function to register a new user with email and password
-  const register = (email, password) =>
+  const createUser = (email, password) =>
     createUserWithEmailAndPassword(auth, email, password);
 
   // Function to login existing user
@@ -38,10 +38,10 @@ const AuthProvider = ({ children }) => {
   // Function to login with Google using popup
   const googleLogin = () => signInWithPopup(auth, new GoogleAuthProvider());
 
-  const updateUserProfile = (name, photoURL) => {
+  const updateUserProfile = async ({ displayName, photoURL }) => {
     return updateProfile(auth.currentUser, {
-      displayName: name,
-      photoURL: photoURL,
+      displayName,
+      photoURL,
     });
   };
 
@@ -49,7 +49,7 @@ const AuthProvider = ({ children }) => {
   const logout = () => signOut(auth);
   const authInfo = {
     user,
-    register,
+    createUser,
     updateUserProfile,
     login,
     googleLogin,

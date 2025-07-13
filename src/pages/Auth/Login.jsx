@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import Swal from "sweetalert2";
-import { FcGoogle } from "react-icons/fc";
 import useAuth from "../../hooks/useAuth";
+import GoogleLogin from "./GoogleLogin";
 
 const Login = () => {
   const { login, googleLogin } = useAuth();
@@ -24,31 +24,25 @@ const Login = () => {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      await googleLogin();
-      Swal.fire("Success", "Logged in with Google!", "success");
-      navigate("/");
-    } catch (error) {
-      Swal.fire("Error", error.message || "Google login failed", "error");
-    }
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center mb-6 text-indigo-600">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg border border-gray-200">
+        <h2 className="text-2xl font-bold text-center mb-6 text-rose-700">
           Login to FindMyMate
         </h2>
+
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block mb-1 font-medium">
+            <label
+              htmlFor="email"
+              className="block mb-1 font-medium text-gray-700"
+            >
               Email
             </label>
             <input
               id="email"
               type="email"
-              className="w-full border px-3 py-2 rounded outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full border border-rose-700 px-3 py-2 rounded outline-none focus:ring-2 focus:ring-rose-700"
               {...register("email", { required: "Email is required" })}
             />
             {errors.email && (
@@ -59,13 +53,16 @@ const Login = () => {
           </div>
 
           <div>
-            <label htmlFor="password" className="block mb-1 font-medium">
+            <label
+              htmlFor="password"
+              className="block mb-1 font-medium text-gray-700"
+            >
               Password
             </label>
             <input
               id="password"
               type="password"
-              className="w-full border px-3 py-2 rounded outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full border border-rose-700 px-3 py-2 rounded outline-none focus:ring-2 focus:ring-rose-700"
               {...register("password", {
                 required: "Password is required",
                 minLength: {
@@ -79,31 +76,32 @@ const Login = () => {
                 {errors.password.message}
               </p>
             )}
+            <div className="text-right mt-1">
+              <Link
+                to="#"
+                className="text-sm font-medium text-gray-500 hover:text-rose-700"
+              >
+                Forgot Password?
+              </Link>
+            </div>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition"
+            className="w-full py-2 rounded font-semibold bg-rose-700 text-white shadow-md hover:bg-rose-800 transition"
           >
             Login
           </button>
         </form>
 
-        <div className="text-center my-4 text-sm text-gray-500">or</div>
+        <div className="text-center my-4 text-sm text-gray-500">OR</div>
 
-        <button
-          onClick={handleGoogleLogin}
-          className="w-full flex items-center justify-center gap-2 border py-2 rounded hover:bg-gray-100 transition"
-        >
-          <FcGoogle className="text-xl" />
-          Login with Google
-        </button>
-
+        <GoogleLogin></GoogleLogin>
         <p className="mt-4 text-sm text-center text-gray-600">
           Don’t have an account?{" "}
           <Link
             to="/register"
-            className="text-indigo-600 font-medium hover:underline"
+            className="text-rose-700 font-medium hover:underline"
           >
             Register
           </Link>

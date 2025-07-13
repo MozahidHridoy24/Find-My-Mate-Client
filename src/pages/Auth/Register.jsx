@@ -1,105 +1,213 @@
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, Link } from "react-router";
-import Swal from "sweetalert2";
+import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
+import axios from "axios";
+import Swal from "sweetalert2";
+import GoogleLogin from "./GoogleLogin";
 
 const Register = () => {
-  const { register: createUser, updateUserProfile } = useAuth();
-  const navigate = useNavigate();
-
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm();
+  const { createUser, updateUserProfile } = useAuth();
+  const [profilePic, setProfilePic] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from || "/";
 
+  // 🔄 Handle Registration Submit
   const onSubmit = async (data) => {
     try {
-      const { name, email, password, photoURL } = data;
+      const result = await createUser(data.email, data.password);
 
-      await createUser(email, password);
-      await updateUserProfile({ displayName: name, photoURL });
+      const userInfo = {
+        name: data.name,
+        email: data.email,
+        role: "user",
+        photoURL: profilePic,
+        created_at: new Date().toISOString(),
+        last_log_in: new Date().toISOString(),
+      };
 
-      Swal.fire("Success!", "Account created successfully!", "success");
-      reset();
-      navigate("/");
-    } catch (err) {
-      Swal.fire("Error", err.message || "Registration failed", "error");
+      await axios.post("http://localhost:3000/users", userInfo);
+
+      await updateUserProfile({ displayName: data.name, photoURL: profilePic });
+
+      Swal.fire({
+        icon: "success",
+        title: "Registration Successful",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      navigate(from);
+    } catch (error) {
+      if (error.code === "auth/email-already-in-use") {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "This email is already registered. Please login or use a different email.",
+        });
+      } else {
+        console.error(error);
+        Swal.fire({
+          icon: "error",
+          title: "Something went wrong!",
+          text: error.message || "Try again later.",
+        });
+      }
+    }
+  };
+
+  // 🖼️ Handle Image Upload
+  const handleImageUpload = async (e) => {
+    const image = e.target.files[0];
+    if (!image) return;
+
+    const formData = new FormData();
+    formData.append("image", image);
+
+    try {
+      const uploadUrl = `https://api.imgbb.com/1/upload?key=${
+        import.meta.env.VITE_image_upload_key
+      }`;
+      const res = await axios.post(uploadUrl, formData);
+      setProfilePic(res.data.data.url);
+    } catch (error) {
+      console.error("Image upload failed:", error);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md bg-white p-8 rounded shadow">
-        <h2 className="text-2xl font-bold text-center mb-6 text-indigo-600">Register</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#C2185B]/20 via-[#8E44AD]/20 to-[#C2185B]/10 px-4">
+      <div className="bg-white w-full max-w-md p-8 rounded-2xl shadow-lg">
+        <h1 className="text-4xl font-extrabold mb-8 text-[#C2185B] text-center">
+          Create Account
+        </h1>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Name */}
           <div>
-            <label className="block mb-1 font-medium">Name</label>
+            <label className="block font-semibold mb-2 text-[#8E44AD]">
+              Your Name
+            </label>
             <input
               type="text"
+              placeholder="Your Name"
               {...register("name", { required: "Name is required" })}
-              className="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-indigo-500 outline-none"
+              className={`w-full px-4 py-3 border rounded-lg focus:outline-none transition ${
+                errors.name
+                  ? "border-red-500 focus:border-red-600"
+                  : "border-gray-300 focus:border-[#8E44AD]"
+              }`}
             />
             {errors.name && (
-              <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
+              <p className="text-red-600 mt-1 text-sm">{errors.name.message}</p>
+            )}
+          </div>
+
+          {/* Profile Picture */}
+          <div>
+            <label className="block font-semibold mb-2 text-[#8E44AD]">
+              Profile Picture
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="w-full"
+            />
+            {profilePic && (
+              <img
+                src={profilePic}
+                alt="Profile Preview"
+                className="mt-3 w-24 h-24 rounded-full object-cover shadow-md border-2 border-[#C2185B]"
+              />
             )}
           </div>
 
           {/* Email */}
           <div>
-            <label className="block mb-1 font-medium">Email</label>
+            <label className="block font-semibold mb-2 text-[#8E44AD]">
+              Email
+            </label>
             <input
               type="email"
+              placeholder="Email"
               {...register("email", { required: "Email is required" })}
-              className="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-indigo-500 outline-none"
+              className={`w-full px-4 py-3 border rounded-lg focus:outline-none transition ${
+                errors.email
+                  ? "border-red-500 focus:border-red-600"
+                  : "border-gray-300 focus:border-[#8E44AD]"
+              }`}
             />
             {errors.email && (
-              <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
+              <p className="text-red-600 mt-1 text-sm">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
           {/* Password */}
           <div>
-            <label className="block mb-1 font-medium">Password</label>
+            <label className="block font-semibold mb-2 text-[#8E44AD]">
+              Password
+            </label>
             <input
               type="password"
+              placeholder="Password"
               {...register("password", {
                 required: "Password is required",
-                minLength: { value: 6, message: "At least 6 characters" },
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters",
+                },
               })}
-              className="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-indigo-500 outline-none"
+              className={`w-full px-4 py-3 border rounded-lg focus:outline-none transition ${
+                errors.password
+                  ? "border-red-500 focus:border-red-600"
+                  : "border-gray-300 focus:border-[#8E44AD]"
+              }`}
             />
             {errors.password && (
-              <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
+              <p className="text-red-600 mt-1 text-sm">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
-          {/* Photo URL */}
-          <div>
-            <label className="block mb-1 font-medium">Photo URL</label>
-            <input
-              type="text"
-              {...register("photoURL")}
-              placeholder="https://example.com/photo.jpg"
-              className="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-indigo-500 outline-none"
-            />
+          {/* Forgot Password */}
+          <div className="text-right">
+            <Link
+              to="#"
+              className="text-sm text-[#C2185B] hover:underline font-medium"
+            >
+              Forgot password?
+            </Link>
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition"
+            className="w-full bg-[#C2185B] hover:bg-[#8E44AD] transition-colors text-white font-bold py-3 rounded-lg shadow-md"
           >
             Register
           </button>
         </form>
+        <div className="text-center py-4">OR</div>
+        <GoogleLogin></GoogleLogin>
 
-        <p className="mt-4 text-sm text-center text-gray-600">
+        {/* Link to Login */}
+        <p className="mt-6 text-center text-gray-600">
           Already have an account?{" "}
-          <Link to="/login" className="text-indigo-600 hover:underline">
-            Login here
+          <Link
+            to="/login"
+            className="text-[#C2185B] font-semibold hover:underline"
+          >
+            Login
           </Link>
         </p>
       </div>

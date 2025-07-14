@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
@@ -31,14 +31,6 @@ const AllBiodatas = () => {
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleViewProfile = (id) => {
-    if (!user) {
-      navigate("/login");
-    } else {
-      navigate(`/biodata/${id}`);
-    }
   };
 
   return (
@@ -122,7 +114,6 @@ const AllBiodatas = () => {
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             <AnimatePresence>
-              {/* ✅ Add this conditional check for empty results */}
               {biodatas.length === 0 ? (
                 <motion.div
                   key="no-result"
@@ -175,12 +166,12 @@ const AllBiodatas = () => {
                         <strong>Occupation:</strong> {biodata.occupation}
                       </p>
 
-                      <button
-                        onClick={() => handleViewProfile(biodata._id)}
-                        className="mt-3 w-full bg-[#C2185B] hover:bg-[#8E44AD] text-white font-semibold py-2 rounded"
+                      <NavLink
+                        to={`/biodata-details/${biodata._id}`}
+                        className="block text-center mt-3 w-full bg-[#C2185B] hover:bg-[#8E44AD] text-white font-semibold py-2 rounded"
                       >
                         View Profile
-                      </button>
+                      </NavLink>
                     </div>
                   </motion.div>
                 ))

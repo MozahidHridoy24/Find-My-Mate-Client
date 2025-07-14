@@ -8,6 +8,7 @@ import PrivateRoute from "./PrivateRoute";
 import AdminDashboard from "../pages/Dashboard/Admin/AdminDashboard";
 import EditBiodata from "../pages/Dashboard/User/EditBiodata";
 import ViewBiodata from "../pages/Dashboard/User/ViewBiodata";
+import AllBiodatas from "../pages/Biodatas/AllBiodatas";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ export const router = createBrowserRouter([
       {
         path: "register",
         element: <Register></Register>,
+      },
+      {
+        path: "/biodatas",
+        element: <AllBiodatas></AllBiodatas>,
       },
     ],
   },

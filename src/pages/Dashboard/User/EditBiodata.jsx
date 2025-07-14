@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
@@ -13,7 +13,8 @@ const EditBiodata = () => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
 
-  // Fetch existing biodata for logged-in user
+  const [previewImg, setPreviewImg] = useState("");
+
   const { data: biodata, isLoading } = useQuery({
     queryKey: ["biodata", user?.email],
     queryFn: async () => {
@@ -31,10 +32,25 @@ const EditBiodata = () => {
     formState: { errors },
   } = useForm();
 
-  // Watch the imageFile input for changes
   const imageFile = watch("imageFile");
+  const imageUrl = watch("image");
 
-  // Populate form values if biodata exists
+  useEffect(() => {
+    if (imageFile && imageFile.length > 0) {
+      const file = imageFile[0];
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewImg(objectUrl);
+
+      return () => URL.revokeObjectURL(objectUrl);
+    } else if (imageUrl) {
+      setPreviewImg(imageUrl);
+    } else if (biodata?.image) {
+      setPreviewImg(biodata.image);
+    } else {
+      setPreviewImg("");
+    }
+  }, [imageFile, imageUrl, biodata]);
+
   useEffect(() => {
     if (biodata) {
       Object.keys(biodata).forEach((key) => {
@@ -43,14 +59,12 @@ const EditBiodata = () => {
     }
   }, [biodata, setValue]);
 
-  // ImgBB API key (replace with your own)
   const imgbbApiKey = import.meta.env.VITE_image_upload_key;
 
   const onSubmit = async (data) => {
     try {
       data.email = user?.email;
 
-      // If user uploads a new image file, upload it to ImgBB
       if (data.imageFile && data.imageFile.length > 0) {
         const formData = new FormData();
         formData.append("image", data.imageFile[0]);
@@ -65,13 +79,12 @@ const EditBiodata = () => {
         const result = await res.json();
 
         if (result.success) {
-          data.image = result.data.url; // Use uploaded image URL
+          data.image = result.data.url;
         } else {
           throw new Error("Image upload failed");
         }
       }
 
-      // Remove imageFile before sending to backend
       delete data.imageFile;
 
       await axiosSecure.put("/biodatas", data);
@@ -88,287 +101,398 @@ const EditBiodata = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="max-w-2xl mx-auto my-10 p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-3xl font-bold text-center text-[#C2185B] mb-6">
+    <div className="max-w-5xl mx-auto my-12 p-8 bg-white shadow-lg rounded-xl border border-gray-200">
+      <h2 className="text-4xl font-extrabold text-center text-[#C2185B] mb-10 tracking-wide">
         {biodata ? "Edit" : "Create"} Your Biodata
       </h2>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* Biodata Type */}
-        <div>
-          <label className="block font-semibold">Biodata Type</label>
-          <select
-            {...register("biodataType", { required: true })}
-            className="select select-bordered w-full"
-          >
-            <option value="">Select</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-          {errors.biodataType && <p className="text-red-500">Required</p>}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+        {/* Grid with 2 columns for paired fields */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6">
+          {/* 1. Biodata Type */}
+          <div>
+            <label className="block font-semibold mb-2">Biodata Type</label>
+            <select
+              {...register("biodataType", { required: true })}
+              className={`select select-bordered w-full ${
+                errors.biodataType ? "border-red-500" : ""
+              }`}
+            >
+              <option value="">Select</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            {errors.biodataType && (
+              <p className="text-red-500 mt-1 text-sm">
+                This field is required
+              </p>
+            )}
+          </div>
+
+          {/* 2. Name */}
+          <div>
+            <label className="block font-semibold mb-2">Name</label>
+            <input
+              type="text"
+              {...register("name", { required: true })}
+              className={`input input-bordered w-full ${
+                errors.name ? "border-red-500" : ""
+              }`}
+              placeholder="Enter your full name"
+            />
+            {errors.name && (
+              <p className="text-red-500 mt-1 text-sm">
+                This field is required
+              </p>
+            )}
+          </div>
+
+          {/* 3. Date of Birth */}
+          <div>
+            <label className="block font-semibold mb-2">Date of Birth</label>
+            <input
+              type="date"
+              {...register("dob", { required: true })}
+              className={`input input-bordered w-full ${
+                errors.dob ? "border-red-500" : ""
+              }`}
+            />
+            {errors.dob && (
+              <p className="text-red-500 mt-1 text-sm">
+                This field is required
+              </p>
+            )}
+          </div>
+
+          {/* 4. Height */}
+          <div>
+            <label className="block font-semibold mb-2">Height</label>
+            <select
+              {...register("height", { required: true })}
+              className={`select select-bordered w-full ${
+                errors.height ? "border-red-500" : ""
+              }`}
+            >
+              <option value="">Select</option>
+              <option value="5'0">5'0</option>
+              <option value="5'5">5'5</option>
+              <option value="6'0">6'0</option>
+            </select>
+            {errors.height && (
+              <p className="text-red-500 mt-1 text-sm">
+                This field is required
+              </p>
+            )}
+          </div>
+
+          {/* 5. Weight */}
+          <div>
+            <label className="block font-semibold mb-2">Weight</label>
+            <select
+              {...register("weight", { required: true })}
+              className={`select select-bordered w-full ${
+                errors.weight ? "border-red-500" : ""
+              }`}
+            >
+              <option value="">Select</option>
+              <option value="50kg">50kg</option>
+              <option value="60kg">60kg</option>
+              <option value="70kg">70kg</option>
+            </select>
+            {errors.weight && (
+              <p className="text-red-500 mt-1 text-sm">
+                This field is required
+              </p>
+            )}
+          </div>
+
+          {/* 6. Age */}
+          <div>
+            <label className="block font-semibold mb-2">Age</label>
+            <input
+              type="number"
+              {...register("age", { required: true })}
+              className={`input input-bordered w-full ${
+                errors.age ? "border-red-500" : ""
+              }`}
+              placeholder="Your age"
+              min={18}
+            />
+            {errors.age && (
+              <p className="text-red-500 mt-1 text-sm">
+                This field is required
+              </p>
+            )}
+          </div>
+
+          {/* 7. Occupation */}
+          <div>
+            <label className="block font-semibold mb-2">Occupation</label>
+            <select
+              {...register("occupation", { required: true })}
+              className={`select select-bordered w-full ${
+                errors.occupation ? "border-red-500" : ""
+              }`}
+            >
+              <option value="">Select</option>
+              <option value="Engineer">Engineer</option>
+              <option value="Teacher">Teacher</option>
+              <option value="Doctor">Doctor</option>
+            </select>
+            {errors.occupation && (
+              <p className="text-red-500 mt-1 text-sm">
+                This field is required
+              </p>
+            )}
+          </div>
+
+          {/* 8. Race */}
+          <div>
+            <label className="block font-semibold mb-2">
+              Race (Skin Color)
+            </label>
+            <select
+              {...register("race", { required: true })}
+              className={`select select-bordered w-full ${
+                errors.race ? "border-red-500" : ""
+              }`}
+            >
+              <option value="">Select</option>
+              <option value="Fair">Fair</option>
+              <option value="Medium">Medium</option>
+              <option value="Dark">Dark</option>
+            </select>
+            {errors.race && (
+              <p className="text-red-500 mt-1 text-sm">
+                This field is required
+              </p>
+            )}
+          </div>
+
+          {/* 9. Father's Name */}
+          <div>
+            <label className="block font-semibold mb-2">Father's Name</label>
+            <input
+              type="text"
+              {...register("fatherName", { required: true })}
+              className={`input input-bordered w-full ${
+                errors.fatherName ? "border-red-500" : ""
+              }`}
+              placeholder="Your father's name"
+            />
+            {errors.fatherName && (
+              <p className="text-red-500 mt-1 text-sm">
+                This field is required
+              </p>
+            )}
+          </div>
+
+          {/* 10. Mother's Name */}
+          <div>
+            <label className="block font-semibold mb-2">Mother's Name</label>
+            <input
+              type="text"
+              {...register("motherName", { required: true })}
+              className={`input input-bordered w-full ${
+                errors.motherName ? "border-red-500" : ""
+              }`}
+              placeholder="Your mother's name"
+            />
+            {errors.motherName && (
+              <p className="text-red-500 mt-1 text-sm">
+                This field is required
+              </p>
+            )}
+          </div>
+
+          {/* 11. Permanent Division */}
+          <div>
+            <label className="block font-semibold mb-2">
+              Permanent Division
+            </label>
+            <select
+              {...register("permanentDivision", { required: true })}
+              className={`select select-bordered w-full ${
+                errors.permanentDivision ? "border-red-500" : ""
+              }`}
+            >
+              <option value="">Select</option>
+              <option value="Dhaka">Dhaka</option>
+              <option value="Chattagram">Chattagram</option>
+              <option value="Rangpur">Rangpur</option>
+              <option value="Barisal">Barisal</option>
+              <option value="Khulna">Khulna</option>
+              <option value="Mymensingh">Mymensingh</option>
+              <option value="Sylhet">Sylhet</option>
+            </select>
+            {errors.permanentDivision && (
+              <p className="text-red-500 mt-1 text-sm">
+                This field is required
+              </p>
+            )}
+          </div>
+
+          {/* 12. Present Division */}
+          <div>
+            <label className="block font-semibold mb-2">Present Division</label>
+            <select
+              {...register("presentDivision", { required: true })}
+              className={`select select-bordered w-full ${
+                errors.presentDivision ? "border-red-500" : ""
+              }`}
+            >
+              <option value="">Select</option>
+              <option value="Dhaka">Dhaka</option>
+              <option value="Chattagram">Chattagram</option>
+              <option value="Rangpur">Rangpur</option>
+              <option value="Barisal">Barisal</option>
+              <option value="Khulna">Khulna</option>
+              <option value="Mymensingh">Mymensingh</option>
+              <option value="Sylhet">Sylhet</option>
+            </select>
+            {errors.presentDivision && (
+              <p className="text-red-500 mt-1 text-sm">
+                This field is required
+              </p>
+            )}
+          </div>
+
+          {/* 13. Expected Partner Age */}
+          <div>
+            <label className="block font-semibold mb-2">
+              Expected Partner Age
+            </label>
+            <input
+              type="number"
+              {...register("expectedPartnerAge", { required: true })}
+              className={`input input-bordered w-full ${
+                errors.expectedPartnerAge ? "border-red-500" : ""
+              }`}
+              placeholder="Expected partner age"
+              min={18}
+            />
+            {errors.expectedPartnerAge && (
+              <p className="text-red-500 mt-1 text-sm">
+                This field is required
+              </p>
+            )}
+          </div>
+
+          {/* 14. Expected Partner Height */}
+          <div>
+            <label className="block font-semibold mb-2">
+              Expected Partner Height
+            </label>
+            <select
+              {...register("expectedPartnerHeight", { required: true })}
+              className={`select select-bordered w-full ${
+                errors.expectedPartnerHeight ? "border-red-500" : ""
+              }`}
+            >
+              <option value="">Select</option>
+              <option value="5'0">5'0</option>
+              <option value="5'5">5'5</option>
+              <option value="6'0">6'0</option>
+            </select>
+            {errors.expectedPartnerHeight && (
+              <p className="text-red-500 mt-1 text-sm">
+                This field is required
+              </p>
+            )}
+          </div>
+
+          {/* 15. Expected Partner Weight */}
+          <div>
+            <label className="block font-semibold mb-2">
+              Expected Partner Weight
+            </label>
+            <select
+              {...register("expectedPartnerWeight", { required: true })}
+              className={`select select-bordered w-full ${
+                errors.expectedPartnerWeight ? "border-red-500" : ""
+              }`}
+            >
+              <option value="">Select</option>
+              <option value="50kg">50kg</option>
+              <option value="60kg">60kg</option>
+              <option value="70kg">70kg</option>
+            </select>
+            {errors.expectedPartnerWeight && (
+              <p className="text-red-500 mt-1 text-sm">
+                This field is required
+              </p>
+            )}
+          </div>
+
+          {/* 16. Mobile Number */}
+          <div>
+            <label className="block font-semibold mb-2">Mobile Number</label>
+            <input
+              type="text"
+              {...register("mobile", { required: true })}
+              className={`input input-bordered w-full ${
+                errors.mobile ? "border-red-500" : ""
+              }`}
+              placeholder="+8801XXXXXXXXX"
+            />
+            {errors.mobile && (
+              <p className="text-red-500 mt-1 text-sm">
+                This field is required
+              </p>
+            )}
+          </div>
+
+          {/* 17. Email (readonly) */}
+          <div>
+            <label className="block font-semibold mb-2">Email</label>
+            <input
+              type="email"
+              value={user?.email}
+              readOnly
+              className="input input-bordered w-full bg-gray-100 cursor-not-allowed"
+            />
+          </div>
         </div>
 
-        {/* Name */}
+        {/* Image Upload & Preview Section - full width */}
         <div>
-          <label className="block font-semibold">Name</label>
-          <input
-            type="text"
-            {...register("name", { required: true })}
-            className="input input-bordered w-full"
-          />
-          {errors.name && <p className="text-red-500">Required</p>}
-        </div>
-
-        {/* Profile Image Link (manual) */}
-        <div>
-          <label className="block font-semibold">
+          <label className="block font-semibold mb-2">
             Profile Image Link (or upload below)
           </label>
           <input
             type="url"
             {...register("image")}
             placeholder="Enter image URL"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full mb-3"
           />
-          {errors.image && (
-            <p className="text-red-500">
-              Please enter valid URL or upload file
-            </p>
-          )}
-        </div>
 
-        {/* Profile Image Upload */}
-        <div>
-          <label className="block font-semibold">Or Upload Profile Image</label>
+          <label className="block font-semibold mb-2">
+            Or Upload Profile Image
+          </label>
           <input
             type="file"
             accept="image/*"
             {...register("imageFile")}
             className="file-input file-input-bordered w-full"
           />
-          {imageFile && imageFile.length > 0 && (
-            <p className="mt-1 text-green-600 text-sm">
-              Image file selected: {imageFile[0].name}
-            </p>
+
+          {previewImg && (
+            <div className="mt-4 rounded-lg overflow-hidden shadow-lg border border-gray-300 max-w-xs mx-auto">
+              <img
+                src={previewImg}
+                alt="Profile preview"
+                className="w-full h-48 object-cover"
+                loading="lazy"
+              />
+            </div>
           )}
-        </div>
-
-        {/* Date of Birth */}
-        <div>
-          <label className="block font-semibold">Date of Birth</label>
-          <input
-            type="date"
-            {...register("dob", { required: true })}
-            className="input input-bordered w-full"
-          />
-          {errors.dob && <p className="text-red-500">Required</p>}
-        </div>
-
-        {/* Height */}
-        <div>
-          <label className="block font-semibold">Height</label>
-          <select
-            {...register("height", { required: true })}
-            className="select select-bordered w-full"
-          >
-            <option value="">Select</option>
-            <option value="5'0">5'0</option>
-            <option value="5'5">5'5</option>
-            <option value="6'0">6'0</option>
-          </select>
-          {errors.height && <p className="text-red-500">Required</p>}
-        </div>
-
-        {/* Weight */}
-        <div>
-          <label className="block font-semibold">Weight</label>
-          <select
-            {...register("weight", { required: true })}
-            className="select select-bordered w-full"
-          >
-            <option value="">Select</option>
-            <option value="50kg">50kg</option>
-            <option value="60kg">60kg</option>
-            <option value="70kg">70kg</option>
-          </select>
-          {errors.weight && <p className="text-red-500">Required</p>}
-        </div>
-
-        {/* Age */}
-        <div>
-          <label className="block font-semibold">Age</label>
-          <input
-            type="number"
-            {...register("age", { required: true })}
-            className="input input-bordered w-full"
-          />
-          {errors.age && <p className="text-red-500">Required</p>}
-        </div>
-
-        {/* Occupation */}
-        <div>
-          <label className="block font-semibold">Occupation</label>
-          <select
-            {...register("occupation", { required: true })}
-            className="select select-bordered w-full"
-          >
-            <option value="">Select</option>
-            <option value="Engineer">Engineer</option>
-            <option value="Teacher">Teacher</option>
-            <option value="Doctor">Doctor</option>
-          </select>
-          {errors.occupation && <p className="text-red-500">Required</p>}
-        </div>
-
-        {/* Race */}
-        <div>
-          <label className="block font-semibold">Race</label>
-          <select
-            {...register("race", { required: true })}
-            className="select select-bordered w-full"
-          >
-            <option value="">Select</option>
-            <option value="Fair">Fair</option>
-            <option value="Medium">Medium</option>
-            <option value="Dark">Dark</option>
-          </select>
-          {errors.race && <p className="text-red-500">Required</p>}
-        </div>
-
-        {/* Father's Name */}
-        <div>
-          <label className="block font-semibold">Father's Name</label>
-          <input
-            type="text"
-            {...register("fatherName", { required: true })}
-            className="input input-bordered w-full"
-          />
-          {errors.fatherName && <p className="text-red-500">Required</p>}
-        </div>
-
-        {/* Mother's Name */}
-        <div>
-          <label className="block font-semibold">Mother's Name</label>
-          <input
-            type="text"
-            {...register("motherName", { required: true })}
-            className="input input-bordered w-full"
-          />
-          {errors.motherName && <p className="text-red-500">Required</p>}
-        </div>
-
-        {/* Permanent Division */}
-        <div>
-          <label className="block font-semibold">Permanent Division</label>
-          <select
-            {...register("permanentDivision", { required: true })}
-            className="select select-bordered w-full"
-          >
-            <option value="">Select</option>
-            <option value="Dhaka">Dhaka</option>
-            <option value="Chattagram">Chattagram</option>
-            <option value="Rangpur">Rangpur</option>
-            <option value="Barisal">Barisal</option>
-            <option value="Khulna">Khulna</option>
-            <option value="Mymensingh">Mymensingh</option>
-            <option value="Sylhet">Sylhet</option>
-          </select>
-          {errors.permanentDivision && <p className="text-red-500">Required</p>}
-        </div>
-
-        {/* Present Division */}
-        <div>
-          <label className="block font-semibold">Present Division</label>
-          <select
-            {...register("presentDivision", { required: true })}
-            className="select select-bordered w-full"
-          >
-            <option value="">Select</option>
-            <option value="Dhaka">Dhaka</option>
-            <option value="Chattagram">Chattagram</option>
-            <option value="Rangpur">Rangpur</option>
-            <option value="Barisal">Barisal</option>
-            <option value="Khulna">Khulna</option>
-            <option value="Mymensingh">Mymensingh</option>
-            <option value="Sylhet">Sylhet</option>
-          </select>
-          {errors.presentDivision && <p className="text-red-500">Required</p>}
-        </div>
-
-        {/* Expected Partner Age */}
-        <div>
-          <label className="block font-semibold">Expected Partner Age</label>
-          <input
-            type="number"
-            {...register("expectedPartnerAge", { required: true })}
-            className="input input-bordered w-full"
-          />
-          {errors.expectedPartnerAge && (
-            <p className="text-red-500">Required</p>
-          )}
-        </div>
-
-        {/* Expected Partner Height */}
-        <div>
-          <label className="block font-semibold">Expected Partner Height</label>
-          <select
-            {...register("expectedPartnerHeight", { required: true })}
-            className="select select-bordered w-full"
-          >
-            <option value="">Select</option>
-            <option value="5'0">5'0</option>
-            <option value="5'5">5'5</option>
-            <option value="6'0">6'0</option>
-          </select>
-          {errors.expectedPartnerHeight && (
-            <p className="text-red-500">Required</p>
-          )}
-        </div>
-
-        {/* Expected Partner Weight */}
-        <div>
-          <label className="block font-semibold">Expected Partner Weight</label>
-          <select
-            {...register("expectedPartnerWeight", { required: true })}
-            className="select select-bordered w-full"
-          >
-            <option value="">Select</option>
-            <option value="50kg">50kg</option>
-            <option value="60kg">60kg</option>
-            <option value="70kg">70kg</option>
-          </select>
-          {errors.expectedPartnerWeight && (
-            <p className="text-red-500">Required</p>
-          )}
-        </div>
-
-        {/* Email (readonly) */}
-        <div>
-          <label className="block font-semibold">Email</label>
-          <input
-            type="email"
-            value={user?.email}
-            readOnly
-            className="input input-bordered w-full bg-gray-100"
-          />
-        </div>
-
-        {/* Mobile Number */}
-        <div>
-          <label className="block font-semibold">Mobile Number</label>
-          <input
-            type="text"
-            {...register("mobile", { required: true })}
-            className="input input-bordered w-full"
-          />
-          {errors.mobile && <p className="text-red-500">Required</p>}
         </div>
 
         {/* Submit Button */}
         <div>
           <button
             type="submit"
-            className="w-full bg-[#C2185B] hover:bg-[#8E44AD] text-white font-bold py-3 rounded-lg"
+            className="w-full bg-gradient-to-r from-[#C2185B] to-[#8E44AD] text-white font-extrabold text-lg py-4 rounded-xl shadow-lg hover:scale-105 transform transition-transform duration-300"
           >
             Save & Publish Now
           </button>

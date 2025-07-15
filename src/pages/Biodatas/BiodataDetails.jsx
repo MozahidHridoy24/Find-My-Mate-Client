@@ -10,7 +10,7 @@ import { useEffect } from "react";
 const BiodataDetails = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
-  const { user, userRole } = useAuth(); // 'normal' | 'premium'
+  const { user, userRole } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,13 +21,19 @@ const BiodataDetails = () => {
     data: biodata,
     isLoading,
     isError,
+    refetch,
   } = useQuery({
     queryKey: ["biodata", id],
+    enabled: !!id,
     queryFn: async () => {
       const res = await axiosSecure.get(`/biodata-details/${id}`);
       return res.data;
     },
   });
+
+  useEffect(() => {
+    if (id) refetch();
+  }, [id, refetch]);
 
   const { data: similar = [] } = useQuery({
     queryKey: ["similar", biodata?.biodataType],
@@ -42,7 +48,7 @@ const BiodataDetails = () => {
 
   const handleAddToFavourites = async () => {
     const favData = {
-      biodataId: biodata._id,
+      biodataId: biodata.biodataId,
       userEmail: user.email,
       createdAt: new Date(),
     };
@@ -50,8 +56,7 @@ const BiodataDetails = () => {
     try {
       const res = await axiosSecure.post("/favourites", favData);
 
-      // Assuming backend returns 201 on successful insert
-      if (res.status === 201 && res.data.insertedId) {
+      if ((res.status === 200 && res.data.updated) || res.status === 201) {
         Swal.fire({
           title: "Added!",
           text: "This biodata has been added to your favourites.",
@@ -60,7 +65,6 @@ const BiodataDetails = () => {
         });
       }
     } catch (err) {
-      // If backend sends 409 status for duplicates
       if (err.response?.status === 409) {
         Swal.fire({
           title: "Info",
@@ -99,10 +103,9 @@ const BiodataDetails = () => {
       animate={{ opacity: 1, y: 0 }}
       className="max-w-6xl mx-auto mt-12 p-6 bg-white rounded-lg shadow-lg"
     >
-      {/* Main Container */}
       <div className="flex flex-col md:flex-row gap-10">
-        {/* Left: Image */}
-        <div className="md:w-1/3 rounded overflow-hidden shadow-md border border-gray-200">
+        {/* Left Image */}
+        <div className="md:w-1/3 rounded overflow-hidden shadow-md border">
           <img
             src={biodata.image}
             alt={biodata.name}
@@ -110,9 +113,8 @@ const BiodataDetails = () => {
           />
         </div>
 
-        {/* Right: Details */}
+        {/* Right Details */}
         <div className="md:w-2/3 flex flex-col justify-between">
-          {/* Name and Basic Info */}
           <div>
             <h1 className="text-4xl font-extrabold text-[#C2185B] mb-4">
               {biodata.name}
@@ -179,7 +181,7 @@ const BiodataDetails = () => {
         </div>
       </div>
 
-      {/* Similar Biodatas Section */}
+      {/* Similar Biodatas */}
       <section className="mt-16">
         <h2 className="text-3xl font-bold mb-6 text-[#8E44AD]">
           Similar Biodatas
@@ -222,7 +224,7 @@ const BiodataDetails = () => {
   );
 };
 
-// Helper component for label-value pairs
+// Helper for info rows
 const InfoItem = ({ label, value }) => (
   <div>
     <p className="text-gray-500 font-semibold">{label}</p>

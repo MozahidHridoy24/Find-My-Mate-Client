@@ -1,16 +1,13 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { NavLink, useNavigate } from "react-router";
+import { NavLink } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import useAuth from "../../hooks/useAuth";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { MdSearchOff } from "react-icons/md";
 
 const AllBiodatas = () => {
   const axiosSecure = useAxiosSecure();
-  const { user } = useAuth();
-  const navigate = useNavigate();
 
   const [filters, setFilters] = useState({
     biodataType: "",
@@ -27,6 +24,7 @@ const AllBiodatas = () => {
     },
     keepPreviousData: true,
   });
+  // console.log(biodatas);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;

@@ -10,6 +10,7 @@ import EditBiodata from "../pages/Dashboard/User/EditBiodata";
 import ViewBiodata from "../pages/Dashboard/User/ViewBiodata";
 import AllBiodatas from "../pages/Biodatas/AllBiodatas";
 import BiodataDetails from "../pages/Biodatas/BiodataDetails";
+import FavoritesBiodata from "../pages/Dashboard/User/FavoritesBiodata";
 
 export const router = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ export const router = createBrowserRouter([
       {
         path: "view-biodata",
         element: <ViewBiodata></ViewBiodata>,
+      },
+      {
+        path: "favourites",
+        element: <FavoritesBiodata></FavoritesBiodata>,
       },
     ],
   },

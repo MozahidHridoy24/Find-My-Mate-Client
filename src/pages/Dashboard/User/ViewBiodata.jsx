@@ -5,11 +5,13 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import LoadingSpinner from "../../../components/LoadingSpinner";
+import { Link, useNavigate } from "react-router";
 
 const ViewBiodata = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [loadingPremium, setLoadingPremium] = useState(false);
+  const navigate = useNavigate();
 
   const {
     data: biodata,
@@ -36,6 +38,7 @@ const ViewBiodata = () => {
     });
 
     if (result.isConfirmed) {
+      navigate(`/dashboard/payment/${biodata._id}`);
       try {
         setLoadingPremium(true);
         const res = await axiosSecure.put(
@@ -116,13 +119,13 @@ const ViewBiodata = () => {
 
       {!biodata?.premium && (
         <div className="mt-10 text-center">
-          <button
+          <Link
             onClick={handleMakePremium}
             className="bg-[#C2185B] hover:bg-[#8E44AD] text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 disabled:opacity-60"
             disabled={loadingPremium}
           >
             {loadingPremium ? "Sending Request..." : "Make Biodata Premium"}
-          </button>
+          </Link>
         </div>
       )}
     </motion.div>

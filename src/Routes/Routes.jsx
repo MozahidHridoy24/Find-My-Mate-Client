@@ -11,6 +11,7 @@ import ViewBiodata from "../pages/Dashboard/User/ViewBiodata";
 import AllBiodatas from "../pages/Biodatas/AllBiodatas";
 import BiodataDetails from "../pages/Biodatas/BiodataDetails";
 import FavoritesBiodata from "../pages/Dashboard/User/FavoritesBiodata";
+import Payment from "../pages/Dashboard/Payment/Payment";
 
 export const router = createBrowserRouter([
   {
@@ -70,6 +71,10 @@ export const router = createBrowserRouter([
       {
         path: "favourites",
         element: <FavoritesBiodata></FavoritesBiodata>,
+      },
+      {
+        path: "payment/:id",
+        element: <Payment></Payment>,
       },
     ],
   },

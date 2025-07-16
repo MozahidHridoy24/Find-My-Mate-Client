@@ -12,6 +12,8 @@ import AllBiodatas from "../pages/Biodatas/AllBiodatas";
 import BiodataDetails from "../pages/Biodatas/BiodataDetails";
 import FavoritesBiodata from "../pages/Dashboard/User/FavoritesBiodata";
 import Payment from "../pages/Dashboard/Payment/Payment";
+import Checkout from "../pages/Dashboard/Payment/Checkout";
+import MyContactRequest from "../pages/Dashboard/User/MyContactRequest";
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +46,14 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      {
+        path: "/checkout/:id",
+        element: (
+          <PrivateRoute>
+            <Checkout></Checkout>
+          </PrivateRoute>
+        ),
+      },
     ],
   },
   {
@@ -67,6 +77,10 @@ export const router = createBrowserRouter([
       {
         path: "view-biodata",
         element: <ViewBiodata></ViewBiodata>,
+      },
+      {
+        path: "my-contact-requests",
+        element: <MyContactRequest></MyContactRequest>,
       },
       {
         path: "favourites",

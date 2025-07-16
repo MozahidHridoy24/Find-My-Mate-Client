@@ -37,7 +37,7 @@ const DashboardLayout = () => {
                 View Biodata
               </NavLink>
               <NavLink
-                to="/dashboard/my-requests"
+                to="/dashboard/my-contact-requests"
                 className="block hover:text-purple-200"
               >
                 My Contact Request

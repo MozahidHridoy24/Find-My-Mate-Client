@@ -2,22 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "motion/react";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import Swal from "sweetalert2";
-import { useState } from "react";
 import LoadingSpinner from "../../../components/LoadingSpinner";
-import { Link, useNavigate } from "react-router";
+import { NavLink } from "react-router";
 
 const ViewBiodata = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [loadingPremium, setLoadingPremium] = useState(false);
-  const navigate = useNavigate();
 
-  const {
-    data: biodata,
-    isLoading,
-    refetch,
-  } = useQuery({
+  const { data: biodata, isLoading } = useQuery({
     queryKey: ["viewBiodata", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/biodatas/user/${user?.email}`);
@@ -25,36 +17,6 @@ const ViewBiodata = () => {
     },
     enabled: !!user?.email,
   });
-
-  const handleMakePremium = async () => {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "Send your biodata for premium approval?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "#C2185B",
-      cancelButtonColor: "#aaa",
-      confirmButtonText: "Yes, send it!",
-    });
-
-    if (result.isConfirmed) {
-      navigate(`/dashboard/payment/${biodata._id}`);
-      try {
-        setLoadingPremium(true);
-        const res = await axiosSecure.put(
-          `/biodatas/premium-request/${biodata._id}`
-        );
-        if (res.data.modifiedCount > 0) {
-          Swal.fire("Sent!", "Your request has been sent to admin.", "success");
-          refetch();
-        }
-      } catch (err) {
-        Swal.fire("Oops!", "Something went wrong!", "error");
-      } finally {
-        setLoadingPremium(false);
-      }
-    }
-  };
 
   if (isLoading) return <LoadingSpinner />;
 
@@ -119,13 +81,12 @@ const ViewBiodata = () => {
 
       {!biodata?.premium && (
         <div className="mt-10 text-center">
-          <Link
-            onClick={handleMakePremium}
+          <NavLink
+            to={`/dashboard/payment/${biodata._id}`}
             className="bg-[#C2185B] hover:bg-[#8E44AD] text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 disabled:opacity-60"
-            disabled={loadingPremium}
           >
-            {loadingPremium ? "Sending Request..." : "Make Biodata Premium"}
-          </Link>
+            Make Biodata Premium
+          </NavLink>
         </div>
       )}
     </motion.div>

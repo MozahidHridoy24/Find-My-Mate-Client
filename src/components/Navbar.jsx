@@ -2,15 +2,15 @@ import { Link, NavLink, useNavigate } from "react-router";
 import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import useAuth from "../hooks/useAuth";
-
-const LoadingSpinner = () => (
-  <div className="w-6 h-6 border-4 border-rose-700 border-t-purple-700 rounded-full animate-spin"></div>
-);
+import LoadingSpinner from "./LoadingSpinner";
 
 const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { user, logout, loading } = useAuth();
   const navigate = useNavigate();
+
+  // ⏳ Show spinner while auth state is loading
+  if (loading) return <LoadingSpinner />;
 
   const navItems = (
     <>
@@ -78,6 +78,7 @@ const Navbar = () => {
       )}
     </>
   );
+
   const handleLogout = async () => {
     await logout();
     navigate("/login");
@@ -113,9 +114,7 @@ const Navbar = () => {
               <ul className="flex space-x-6">{navItems}</ul>
 
               {/* Auth Buttons */}
-              {loading ? (
-                <LoadingSpinner />
-              ) : !user ? (
+              {!user ? (
                 <>
                   <NavLink
                     to="/login"
@@ -150,9 +149,7 @@ const Navbar = () => {
 
             {/* Mobile Right */}
             <div className="flex md:hidden items-center gap-4">
-              {loading ? (
-                <LoadingSpinner />
-              ) : !user ? (
+              {!user ? (
                 <NavLink
                   to="/login"
                   className="text-sm font-semibold text-rose-700 hover:text-purple-700"

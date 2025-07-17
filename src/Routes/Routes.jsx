@@ -5,7 +5,6 @@ import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import DashboardLayout from "../layouts/DashboardLayout";
 import PrivateRoute from "./PrivateRoute";
-import AdminDashboard from "../pages/Dashboard/Admin/AdminDashboard";
 import EditBiodata from "../pages/Dashboard/User/EditBiodata";
 import ViewBiodata from "../pages/Dashboard/User/ViewBiodata";
 import AllBiodatas from "../pages/Biodatas/AllBiodatas";
@@ -14,6 +13,8 @@ import FavoritesBiodata from "../pages/Dashboard/User/FavoritesBiodata";
 import Payment from "../pages/Dashboard/Payment/Payment";
 import Checkout from "../pages/Dashboard/Payment/Checkout";
 import MyContactRequest from "../pages/Dashboard/User/MyContactRequest";
+import AdminHome from "../pages/Dashboard/Admin/AdminHome";
+import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
 
 export const router = createBrowserRouter([
   {
@@ -67,7 +68,11 @@ export const router = createBrowserRouter([
       // admin routes
       {
         path: "admin-home",
-        element: <AdminDashboard></AdminDashboard>,
+        element: <AdminHome></AdminHome>,
+      },
+      {
+        path: "manage-users",
+        element: <ManageUsers></ManageUsers>,
       },
       // user routes
       {
@@ -85,10 +90,6 @@ export const router = createBrowserRouter([
       {
         path: "favourites",
         element: <FavoritesBiodata></FavoritesBiodata>,
-      },
-      {
-        path: "payment/:id",
-        element: <Payment></Payment>,
       },
     ],
   },

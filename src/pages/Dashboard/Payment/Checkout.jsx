@@ -10,6 +10,7 @@ import {
 } from "@stripe/react-stripe-js";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 const stripePromise = loadStripe(import.meta.env.VITE_payment_Key);
 
@@ -113,7 +114,7 @@ const CheckoutForm = () => {
   );
 
   if (biodataLoading || secretLoading || requestLoading) {
-    return <div className="text-center py-10 text-gray-600">Loading...</div>;
+    return <LoadingSpinner></LoadingSpinner>;
   }
 
   return (

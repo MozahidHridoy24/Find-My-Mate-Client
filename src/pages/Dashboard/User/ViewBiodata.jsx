@@ -1,13 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "motion/react";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import LoadingSpinner from "../../../components/LoadingSpinner";
-import { NavLink } from "react-router";
+import Swal from "sweetalert2";
 
 const ViewBiodata = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const queryClient = useQueryClient();
 
   const { data: biodata, isLoading } = useQuery({
     queryKey: ["viewBiodata", user?.email],
@@ -18,7 +19,54 @@ const ViewBiodata = () => {
     enabled: !!user?.email,
   });
 
+  const { mutate: requestPremium } = useMutation({
+    mutationFn: async (id) => {
+      return await axiosSecure.patch(`/biodatas/premium-status/${id}`, {
+        premiumStatus: "pending",
+      });
+    },
+    onSuccess: () => {
+      Swal.fire(
+        "Requested!",
+        "Your request has been sent to admin.",
+        "success"
+      );
+      queryClient.invalidateQueries(["viewBiodata", user?.email]);
+    },
+    onError: () => {
+      Swal.fire("Error!", "Something went wrong.", "error");
+    },
+  });
+
+  const handleRequestPremium = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to request premium status for this biodata?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#C2185B",
+      cancelButtonColor: "#8E44AD",
+      confirmButtonText: "Yes, request it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        requestPremium(biodata._id);
+      }
+    });
+  };
+
   if (isLoading) return <LoadingSpinner />;
+
+  // Determine button label and status
+  let buttonText = "Make Biodata Premium";
+  let isButtonDisabled = false;
+
+  if (biodata?.premiumStatus === "pending") {
+    buttonText = "Already Requested";
+    isButtonDisabled = true;
+  } else if (biodata?.premiumStatus === "approved") {
+    buttonText = "Premium Member";
+    isButtonDisabled = true;
+  }
 
   return (
     <motion.div
@@ -79,16 +127,19 @@ const ViewBiodata = () => {
         </div>
       </div>
 
-      {!biodata?.premium && (
-        <div className="mt-10 text-center">
-          <NavLink
-            to={`/dashboard/payment/${biodata._id}`}
-            className="bg-[#C2185B] hover:bg-[#8E44AD] text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 disabled:opacity-60"
-          >
-            Make Biodata Premium
-          </NavLink>
-        </div>
-      )}
+      <div className="mt-10 text-center">
+        <button
+          disabled={isButtonDisabled}
+          onClick={handleRequestPremium}
+          className={`${
+            isButtonDisabled
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-[#C2185B] hover:bg-[#8E44AD]"
+          } text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300`}
+        >
+          {buttonText}
+        </button>
+      </div>
     </motion.div>
   );
 };

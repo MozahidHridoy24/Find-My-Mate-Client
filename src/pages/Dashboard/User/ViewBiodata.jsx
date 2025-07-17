@@ -4,6 +4,7 @@ import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import Swal from "sweetalert2";
+import { Link } from "react-router";
 
 const ViewBiodata = () => {
   const { user } = useAuth();
@@ -66,6 +67,35 @@ const ViewBiodata = () => {
   } else if (biodata?.premiumStatus === "approved") {
     buttonText = "Premium Member";
     isButtonDisabled = true;
+  }
+
+  if (!biodata) {
+    return (
+      <motion.div
+        className="max-w-xl mx-auto my-20 p-8 bg-white shadow-md rounded-lg text-center"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/6598/6598510.png"
+          alt="No Data"
+          className="w-32 mx-auto mb-6"
+        />
+        <h2 className="text-2xl font-bold text-[#C2185B] mb-2">
+          No Biodata Found
+        </h2>
+        <p className="text-gray-600 mb-6">
+          You haven’t created your biodata yet. Start now to join our community!
+        </p>
+        <Link
+          to="/dashboard/edit-biodata"
+          className="bg-[#C2185B] hover:bg-[#8E44AD] text-white px-6 py-3 rounded-md font-semibold transition-all duration-300"
+        >
+          Create Biodata
+        </Link>
+      </motion.div>
+    );
   }
 
   return (

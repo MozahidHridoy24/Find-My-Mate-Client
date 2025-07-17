@@ -1,13 +1,19 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
   const [search, setSearch] = useState("");
 
-  const { data: users = [], refetch } = useQuery({
+  // Load users
+  const {
+    data: users = [],
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["users", search],
     queryFn: async () => {
       const res = await axiosSecure.get(`/users?search=${search}`);
@@ -15,23 +21,43 @@ const ManageUsers = () => {
     },
   });
 
+  // Mutation: Make Admin
+  const makeAdminMutation = useMutation({
+    mutationFn: (id) => axiosSecure.patch(`/users/admin/${id}`),
+    onSuccess: (res) => {
+      if (res.data.modifiedCount > 0) {
+        Swal.fire("Success!", "User promoted to Admin.", "success");
+        refetch();
+      }
+    },
+  });
+
+  // Mutation: Make Premium
+  const makePremiumMutation = useMutation({
+    mutationFn: (email) => axiosSecure.patch(`/users/make-premium/${email}`),
+    onSuccess: (res) => {
+      if (
+        res.data.updateUser?.modifiedCount > 0 ||
+        res.data.updateBiodata?.modifiedCount > 0
+      ) {
+        Swal.fire("Success!", "User upgraded to Premium.", "success");
+        refetch();
+      }
+    },
+  });
+
+  // Handlers
   const handleMakeAdmin = async (id) => {
     const confirm = await Swal.fire({
       title: "Are you sure?",
       text: "You want to make this user an admin?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
       confirmButtonText: "Yes, promote",
     });
 
     if (confirm.isConfirmed) {
-      const res = await axiosSecure.patch(`/users/admin/${id}`);
-      if (res.data.modifiedCount > 0) {
-        Swal.fire("Success!", "User promoted to Admin.", "success");
-        refetch();
-      }
+      makeAdminMutation.mutate(id);
     }
   };
 
@@ -45,39 +71,15 @@ const ManageUsers = () => {
     });
 
     if (confirm.isConfirmed) {
-      const res = await axiosSecure.patch(`/users/make-premium/${email}`);
-      if (
-        res.data.updateUser?.modifiedCount > 0 ||
-        res.data.updateBiodata?.modifiedCount > 0
-      ) {
-        Swal.fire("Success!", "User upgraded to Premium.", "success");
-        refetch();
-      }
+      makePremiumMutation.mutate(email);
     }
   };
 
-  const handleDeleteUser = async (id) => {
-    const confirm = await Swal.fire({
-      title: "Delete this user?",
-      text: "This action cannot be undone!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete",
-      cancelButtonText: "Cancel",
-    });
-
-    if (confirm.isConfirmed) {
-      const res = await axiosSecure.delete(`/users/${id}`);
-      if (res.data.deletedCount > 0) {
-        Swal.fire("Deleted!", "User has been removed.", "success");
-        refetch();
-      }
-    }
-  };
+  if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="p-6">
-      <h2 className="text-3xl font-bold mb-6 text-center text-[#C2185B]">
+    <div className="p-4 md:p-6">
+      <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-[#C2185B]">
         Manage Users
       </h2>
 
@@ -85,8 +87,8 @@ const ManageUsers = () => {
       <div className="mb-6 flex justify-center">
         <input
           type="text"
-          placeholder="Search by name or email"
-          className="border border-gray-300 p-3 rounded w-full max-w-md focus:outline-none focus:ring-2 focus:ring-[#C2185B]"
+          placeholder="Search by name"
+          className="border border-gray-300 p-2 md:p-3 rounded w-full max-w-md focus:outline-none focus:ring-2 focus:ring-[#C2185B]"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -102,7 +104,6 @@ const ManageUsers = () => {
               <th className="p-3">Email</th>
               <th className="p-3 text-center">Admin</th>
               <th className="p-3 text-center">Premium</th>
-              <th className="p-3 text-center">Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -122,7 +123,7 @@ const ManageUsers = () => {
                   ) : (
                     <button
                       onClick={() => handleMakeAdmin(user._id)}
-                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-xs md:text-sm"
                     >
                       Make Admin
                     </button>
@@ -138,23 +139,15 @@ const ManageUsers = () => {
                   ) : user.isPremiumRequested ? (
                     <button
                       onClick={() => handleMakePremium(user.email)}
-                      className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600"
+                      className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600 text-xs md:text-sm"
                     >
                       Approve Request
                     </button>
                   ) : (
-                    <span className="text-gray-400 italic">No Request</span>
+                    <span className="text-gray-400 italic text-xs">
+                      No Request
+                    </span>
                   )}
-                </td>
-
-                {/* Delete */}
-                <td className="p-3 text-center">
-                  <button
-                    onClick={() => handleDeleteUser(user._id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                  >
-                    Delete
-                  </button>
                 </td>
               </tr>
             ))}

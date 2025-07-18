@@ -67,7 +67,7 @@ const Navbar = () => {
       {user && (
         <li>
           <NavLink
-            to="/dashboard"
+            to="/dashboard/home"
             className={({ isActive }) =>
               `hover:text-rose-700 transition ${
                 isActive ? "text-rose-700 font-semibold" : "text-gray-800"

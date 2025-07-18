@@ -17,6 +17,8 @@ import AdminHome from "../pages/Dashboard/Admin/AdminHome";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
 import ApprovedPremium from "../pages/Dashboard/Admin/ApprovedPremium";
 import ApproveContactRequest from "../pages/Dashboard/Admin/ApproveContactRequest";
+import Dashboard from "../pages/Dashboard/Dashboard";
+import GotMarried from "../pages/Dashboard/User/GotMarried";
 
 export const router = createBrowserRouter([
   {
@@ -69,8 +71,8 @@ export const router = createBrowserRouter([
     children: [
       // admin routes
       {
-        path: "admin-home",
-        element: <AdminHome></AdminHome>,
+        path: "home",
+        element: <Dashboard></Dashboard>,
       },
       {
         path: "manage-users",
@@ -100,6 +102,10 @@ export const router = createBrowserRouter([
       {
         path: "favourites",
         element: <FavoritesBiodata></FavoritesBiodata>,
+      },
+      {
+        path: "got-married",
+        element: <GotMarried></GotMarried>,
       },
     ],
   },

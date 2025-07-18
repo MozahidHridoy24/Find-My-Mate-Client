@@ -52,7 +52,7 @@ const DashboardLayout = () => {
           )}
 
           {/* Premium routes */}
-          {/* {role === "premium-User" && (
+          {role === "premium" && (
             <>
               <NavLink
                 to="/dashboard/edit-biodata"
@@ -67,7 +67,7 @@ const DashboardLayout = () => {
                 View Biodata
               </NavLink>
               <NavLink
-                to="/dashboard/my-requests"
+                to="/dashboard/my-contact-requests"
                 className="block hover:text-purple-200"
               >
                 My Contact Request
@@ -78,14 +78,8 @@ const DashboardLayout = () => {
               >
                 Favourites Biodata
               </NavLink>
-              <NavLink
-                to="/dashboard/premium-tools"
-                className="block hover:text-purple-200"
-              >
-                Premium Tools
-              </NavLink>
             </>
-          )} */}
+          )}
 
           {/* Admin routes */}
           {role === "admin" && (
@@ -109,7 +103,7 @@ const DashboardLayout = () => {
                 Approved Premium
               </NavLink>
               <NavLink
-                to="/dashboard/approved-contact"
+                to="/dashboard/approved-contact-request"
                 className="block hover:text-purple-200"
               >
                 Approved Contact Request

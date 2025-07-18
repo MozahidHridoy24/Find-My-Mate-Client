@@ -6,6 +6,7 @@ import "swiper/css/pagination";
 import banner1 from "../assets/banner-1.jpg";
 import banner2 from "../assets/banner-2.jpg";
 import banner3 from "../assets/banner-3.jpg";
+import { Link } from "react-router";
 
 const slides = [
   {
@@ -49,9 +50,12 @@ const Banner = () => {
                 <p className="text-lg md:text-xl text-white mb-6 max-w-2xl drop-shadow">
                   {slide.subtitle}
                 </p>
-                <button className="bg-purple-700 text-white px-6 py-3 rounded-lg hover:bg-purple-800 transition">
+                <Link
+                  to="/biodatas"
+                  className="bg-rose-700 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition"
+                >
                   Get Started
-                </button>
+                </Link>
               </div>
             </div>
           </SwiperSlide>

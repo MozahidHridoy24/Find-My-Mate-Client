@@ -141,7 +141,7 @@ const ManageUsers = () => {
                       onClick={() => handleMakePremium(user.email)}
                       className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600 text-xs md:text-sm"
                     >
-                      Approve Request
+                      Make Premium
                     </button>
                   ) : (
                     <span className="text-gray-400 italic text-xs">

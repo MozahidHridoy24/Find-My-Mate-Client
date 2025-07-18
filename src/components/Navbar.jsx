@@ -3,6 +3,8 @@ import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import useAuth from "../hooks/useAuth";
 import LoadingSpinner from "./LoadingSpinner";
+import Lottie from "lottie-react";
+import heartAnimation from "../assets/Lottie/love.json";
 
 const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -104,9 +106,14 @@ const Navbar = () => {
             {/* Logo */}
             <Link
               to="/"
-              className="absolute md:static left-1/2 md:left-0 -translate-x-1/2 md:translate-x-0 text-xl font-bold text-rose-700 flex items-center gap-2"
+              className="absolute md:static left-1/2 md:left-0 -translate-x-1/2 md:translate-x-0 text-2xl font-extrabold text-rose-700 flex items-center gap-2"
             >
-              💜 FindMyMate
+              <span className="tracking-wide">FindMyMate</span>
+
+              {/* Heart Lottie Animation with alignment and bounce */}
+              <div className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center">
+                <Lottie animationData={heartAnimation} loop={true} />
+              </div>
             </Link>
 
             {/* Desktop Navigation */}

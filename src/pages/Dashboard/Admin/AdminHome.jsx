@@ -21,7 +21,6 @@ const AdminHome = () => {
       return res.data;
     },
   });
-  console.log(stats);
 
   if (isLoading) return <LoadingSpinner></LoadingSpinner>;
 

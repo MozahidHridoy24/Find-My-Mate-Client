@@ -1,11 +1,12 @@
 import React from "react";
 import Banner from "../../components/Banner";
-import Footer from "../../components/Footer";
+import PremiumMemberBiodata from "./PremiumMemberBiodata";
 
 const Home = () => {
   return (
     <div>
       <Banner></Banner>
+      <PremiumMemberBiodata></PremiumMemberBiodata>
     </div>
   );
 };

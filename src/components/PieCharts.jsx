@@ -34,7 +34,7 @@ const PieCharts = ({ stats }) => {
       value: stats.premiumCount || 0,
     },
     {
-      name: "Total Revenue in USD",
+      name: "Total Revenue (USD)",
       value: stats.totalRevenue || 0,
     },
   ];

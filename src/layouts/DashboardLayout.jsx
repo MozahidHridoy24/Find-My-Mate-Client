@@ -89,6 +89,12 @@ const DashboardLayout = () => {
               >
                 Approved Contact Request
               </NavLink>
+              <NavLink
+                to="/dashboard/success-story"
+                className={linkClass}
+              >
+                All Success Story
+              </NavLink>
             </>
           )}
 

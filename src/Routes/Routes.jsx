@@ -19,6 +19,7 @@ import ApprovedPremium from "../pages/Dashboard/Admin/ApprovedPremium";
 import ApproveContactRequest from "../pages/Dashboard/Admin/ApproveContactRequest";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import GotMarried from "../pages/Dashboard/User/GotMarried";
+import AdminSuccessStory from "../pages/Dashboard/Admin/AdminSuccessStory";
 
 export const router = createBrowserRouter([
   {
@@ -85,6 +86,10 @@ export const router = createBrowserRouter([
       {
         path: "approved-contact-request",
         element: <ApproveContactRequest></ApproveContactRequest>,
+      },
+      {
+        path: "success-story",
+        element: <AdminSuccessStory></AdminSuccessStory>,
       },
       // user routes
       {

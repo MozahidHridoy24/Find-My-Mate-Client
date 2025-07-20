@@ -4,7 +4,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import useAuth from "../hooks/useAuth";
 import LoadingSpinner from "./LoadingSpinner";
 
-import logo from "../assets/logo.png";
+import logo from "../assets/logo1.png";
 
 const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -107,8 +107,8 @@ const Navbar = () => {
               to="/"
               className="absolute md:static left-1/2 md:left-0 -translate-x-1/2 md:translate-x-0 flex items-center gap-2"
             >
-              <img src={logo} alt="Logo" className="w-8 h-8" />
-              <span className="hidden text-2xl font-extrabold text-rose-700 tracking-wide md:flex items-center gap-1">
+              <img src={logo} alt="Logo" className="w-8 h-8 rounded-full" />
+              <span className="text-2xl font-extrabold text-rose-700 tracking-wide flex items-center gap-1">
                 Find<span className="animate-bounce text-purple-700">My</span>
                 Mate
               </span>
@@ -159,7 +159,7 @@ const Navbar = () => {
               {!user ? (
                 <NavLink
                   to="/login"
-                  className="text-sm font-semibold text-rose-700 hover:text-purple-700"
+                  className="px-1 py-1 text-sm rounded-lg border-2 border-rose-700 text-rose-700 font-semibold hover:bg-rose-700 hover:text-white"
                 >
                   Login
                 </NavLink>
@@ -192,7 +192,7 @@ const Navbar = () => {
 
       {/* Mobile Drawer */}
       <div
-        className={`fixed top-16 left-0 h-[calc(100vh-4rem)] w-2/3 bg-white shadow-lg transform transition-transform duration-300 z-[1000] ${
+        className={`fixed top-16 left-0 h-[calc(100vh-4rem)] w-1/2 bg-rose-50 shadow-lg transform transition-transform duration-300 z-[1000] ${
           isDrawerOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -204,7 +204,7 @@ const Navbar = () => {
       {/* Drawer Overlay */}
       {isDrawerOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-10 z-[998] md:hidden"
+          className="fixed inset-0 z-[998] md:hidden"
           onClick={() => setIsDrawerOpen(false)}
         />
       )}

@@ -4,6 +4,7 @@ import {
   FaLinkedinIn,
   FaGithub,
 } from "react-icons/fa";
+import logo from "../assets/logo1.png";
 
 const Footer = () => {
   return (
@@ -11,7 +12,10 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Logo & Description */}
         <div>
-          <h2 className="text-2xl font-bold tracking-wide">FindMyMate</h2>
+          <div className="flex items-center gap-2">
+            <img src={logo} alt="Logo" className="w-8 h-8 rounded-full" />
+            <h2 className="text-2xl font-bold tracking-wide">FindMyMate</h2>
+          </div>
           <p className="text-sm mt-2">
             Connecting hearts with trust and tradition. Find your perfect match
             with us.

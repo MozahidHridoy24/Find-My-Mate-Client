@@ -3,16 +3,21 @@ import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import useAuth from "../hooks/useAuth";
 import LoadingSpinner from "./LoadingSpinner";
-import Lottie from "lottie-react";
-import heartAnimation from "../assets/Lottie/love.json";
+
+import logo from "../assets/logo.png";
 
 const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [showMobileLogout, setShowMobileLogout] = useState(false);
   const { user, logout, loading } = useAuth();
   const navigate = useNavigate();
 
-  // ⏳ Show spinner while auth state is loading
   if (loading) return <LoadingSpinner />;
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  };
 
   const navItems = (
     <>
@@ -61,7 +66,7 @@ const Navbar = () => {
             }`
           }
         >
-          Contact Us
+          Contact
         </NavLink>
       </li>
       {user && (
@@ -81,42 +86,35 @@ const Navbar = () => {
     </>
   );
 
-  const handleLogout = async () => {
-    await logout();
-    navigate("/login");
-  };
-
   return (
     <>
       {/* Navbar */}
       <nav className="bg-rose-100 border-b border-gray-200 shadow sticky top-0 z-[1000]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Mobile Menu Icon */}
+            {/* Mobile menu icon */}
             <div className="flex md:hidden">
               <button
                 onClick={() => setIsDrawerOpen(!isDrawerOpen)}
-                className="text-2xl text-purple-700 p-2 focus:outline-none"
-                aria-label="Toggle menu"
+                className="text-2xl text-rose-700 p-2 focus:outline-none"
               >
                 {isDrawerOpen ? <FaTimes /> : <FaBars />}
               </button>
             </div>
 
-            {/* Logo */}
+            {/* Logo with text and animated MY */}
             <Link
               to="/"
-              className="absolute md:static left-1/2 md:left-0 -translate-x-1/2 md:translate-x-0 text-2xl font-extrabold text-rose-700 flex items-center gap-2"
+              className="absolute md:static left-1/2 md:left-0 -translate-x-1/2 md:translate-x-0 flex items-center gap-2"
             >
-              <span className="tracking-wide">FindMyMate</span>
-
-              {/* Heart Lottie Animation with alignment and bounce */}
-              <div className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center">
-                <Lottie animationData={heartAnimation} loop={true} />
-              </div>
+              <img src={logo} alt="Logo" className="w-8 h-8" />
+              <span className="hidden text-2xl font-extrabold text-rose-700 tracking-wide md:flex items-center gap-1">
+                Find<span className="animate-bounce text-purple-700">My</span>
+                Mate
+              </span>
             </Link>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Nav */}
             <div className="hidden md:flex items-center space-x-6 font-medium">
               <ul className="flex space-x-6">{navItems}</ul>
 
@@ -125,25 +123,27 @@ const Navbar = () => {
                 <>
                   <NavLink
                     to="/login"
-                    className="px-4 py-2 rounded-lg border-2 border-rose-700 text-rose-700 font-semibold hover:bg-rose-700 hover:text-white transition"
+                    className="px-2 py-2 rounded-lg border-2 border-rose-700 text-rose-700 font-semibold hover:bg-rose-700 hover:text-white transition"
                   >
                     Login
                   </NavLink>
-
                   <NavLink
                     to="/register"
-                    className="px-4 py-2 rounded-lg bg-purple-700 text-white font-semibold hover:bg-purple-800 transition"
+                    className="px-2 py-2 rounded-lg bg-purple-700 text-white font-semibold hover:bg-purple-800 transition"
                   >
                     Register
                   </NavLink>
                 </>
               ) : (
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 relative group">
                   <img
                     src={user.photoURL || "https://via.placeholder.com/32"}
                     alt="User Avatar"
-                    className="w-8 h-8 rounded-full object-cover border-2 border-rose-700"
+                    className="w-9 h-9 rounded-full object-cover border-2 border-rose-700 cursor-pointer"
                   />
+                  <div className="absolute top-12 left-1/2 transform -translate-x-1/2 bg-white px-4 py-1 text-sm text-gray-700 rounded shadow opacity-0 group-hover:opacity-100 transition">
+                    {user.displayName}
+                  </div>
                   <button
                     onClick={handleLogout}
                     className="px-4 py-2 rounded-lg border-2 border-rose-700 text-rose-700 font-semibold hover:bg-rose-700 hover:text-white transition"
@@ -154,8 +154,8 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* Mobile Right */}
-            <div className="flex md:hidden items-center gap-4">
+            {/* Mobile Avatar + Logout */}
+            <div className="flex md:hidden items-center gap-4 relative">
               {!user ? (
                 <NavLink
                   to="/login"
@@ -164,12 +164,26 @@ const Navbar = () => {
                   Login
                 </NavLink>
               ) : (
-                <button
-                  onClick={logout}
-                  className="text-sm font-semibold text-rose-700 hover:text-purple-700"
-                >
-                  Logout
-                </button>
+                <div className="relative">
+                  <img
+                    src={user.photoURL || "https://via.placeholder.com/32"}
+                    alt="User Avatar"
+                    onClick={() => setShowMobileLogout(!showMobileLogout)}
+                    className="w-9 h-9 rounded-full border-2 border-rose-700 cursor-pointer"
+                    title={user.displayName}
+                  />
+                  {showMobileLogout && (
+                    <div className="absolute top-12 right-0 bg-white border rounded shadow-md px-4 py-2 text-sm">
+                      <p className="text-gray-700 mb-2">{user.displayName}</p>
+                      <button
+                        onClick={handleLogout}
+                        className="text-rose-700 font-semibold hover:text-purple-700 transition"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
               )}
             </div>
           </div>
@@ -187,10 +201,10 @@ const Navbar = () => {
         </ul>
       </div>
 
-      {/* Overlay for Drawer */}
+      {/* Drawer Overlay */}
       {isDrawerOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-5 z-[998] md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-10 z-[998] md:hidden"
           onClick={() => setIsDrawerOpen(false)}
         />
       )}

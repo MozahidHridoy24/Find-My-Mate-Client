@@ -32,7 +32,7 @@ const SuccessCounterSection = () => {
       icon: <FaVenus size={35} />,
       title: "Girls Biodata",
       value: stats.femaleCount || 0,
-      color: "text-pink-600",
+      color: "text-rose-600",
     },
     {
       icon: <FaHeart size={35} color="red" />,
@@ -43,7 +43,7 @@ const SuccessCounterSection = () => {
   ];
 
   return (
-    <section className="py-16 px-4 bg-gradient-to-r from-rose-50 via-pink-50 to-purple-50">
+    <section className="py-16 px-4 bg-gradient-to-r from-rose-50 via-rose-50 to-purple-50">
       <h2 className="text-4xl font-bold text-center text-rose-700 mb-12">
         Success at a Glance
       </h2>

@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import PieCharts from "../../../components/PieCharts";
+import { Link } from "react-router";
 
 const AdminHome = () => {
   const axiosSecure = useAxiosSecure();
@@ -29,6 +30,15 @@ const AdminHome = () => {
 
   return (
     <div>
+      {/* Go to Website Button */}
+      <div className="flex justify-end mb-6">
+        <Link
+          to="/"
+          className="bg-[#C2185B] text-white px-6 py-2 rounded-md hover:bg-[#a0144d] transition"
+        >
+          🌐 Go to Website
+        </Link>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
         {/* Total Biodata */}
         <div className={`${cardStyle} border-[#C2185B]`}>
@@ -57,13 +67,13 @@ const AdminHome = () => {
         </div>
 
         {/* Female Biodata */}
-        <div className={`${cardStyle} border-pink-500`}>
-          <FaUserAlt className="text-3xl text-pink-500" />
+        <div className={`${cardStyle} border-rose-500`}>
+          <FaUserAlt className="text-3xl text-rose-500" />
           <div>
             <h3 className="text-lg font-semibold text-gray-700">
               Female Biodatas
             </h3>
-            <p className="text-2xl font-bold text-pink-500">
+            <p className="text-2xl font-bold text-rose-500">
               {stats.femaleCount || 0}
             </p>
           </div>

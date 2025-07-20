@@ -6,11 +6,14 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import { motion } from "motion/react";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
+import useRole from "../../hooks/UseRole";
 
 const BiodataDetails = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
-  const { user, userRole } = useAuth();
+  const { user } = useAuth();
+  const [role, isLoading] = useRole();
+  console.log(role);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +22,7 @@ const BiodataDetails = () => {
 
   const {
     data: biodata,
-    isLoading,
+    isLoading: biodataLoading,
     isError,
     refetch,
   } = useQuery({
@@ -39,7 +42,7 @@ const BiodataDetails = () => {
     queryKey: ["similar", biodata?.biodataType],
     enabled: !!biodata?.biodataType,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/biodatas`, {
+      const res = await axiosSecure.get(`/all-biodatas`, {
         params: { biodataType: biodata.biodataType },
       });
       return res.data.filter((item) => item._id !== id).slice(0, 3);
@@ -88,8 +91,8 @@ const BiodataDetails = () => {
   const handleRequestContact = () => {
     navigate(`/checkout/${biodata._id}`);
   };
-
-  if (isLoading) return <LoadingSpinner />;
+  const loading = isLoading || biodataLoading;
+  if (loading) return <LoadingSpinner />;
   if (isError || !biodata)
     return (
       <div className="text-center text-red-500 py-10 font-semibold">
@@ -143,11 +146,11 @@ const BiodataDetails = () => {
 
           {/* Contact Info */}
           <div className="mb-6">
-            {userRole === "premium" ? (
+            {role === "premium" ? (
               <div className="bg-[#f9e6f1] p-4 rounded border border-[#C2185B] text-[#8E44AD] font-semibold">
                 <h3 className="text-lg mb-2">Contact Information</h3>
                 <p>
-                  <strong>Phone:</strong> {biodata.phone}
+                  <strong>Phone:</strong> {biodata.mobile}
                 </p>
                 <p>
                   <strong>Email:</strong> {biodata.email}
@@ -169,7 +172,7 @@ const BiodataDetails = () => {
               Add to Favourites
             </button>
 
-            {userRole !== "premium" && (
+            {role !== "premium" && (
               <button
                 onClick={handleRequestContact}
                 className="bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600 transition flex-1 sm:flex-none"

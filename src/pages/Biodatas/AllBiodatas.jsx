@@ -49,9 +49,9 @@ const AllBiodatas = () => {
           initial={{ x: -30, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.1 }}
-          className="bg-pink-100 p-6 rounded-md space-y-6 sticky top-24"
+          className="bg-rose-100 p-6 rounded-md space-y-6 sticky top-24"
         >
-          <h2 className="text-xl font-bold text-pink-700">Filter Biodatas</h2>
+          <h2 className="text-xl font-bold text-rose-700">Filter Biodatas</h2>
 
           {/* Biodata Type */}
           <div>
@@ -136,7 +136,7 @@ const AllBiodatas = () => {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                 >
-                  <MdSearchOff className="text-5xl text-pink-600 mb-3" />
+                  <MdSearchOff className="text-5xl text-rose-600 mb-3" />
                   <h3 className="text-lg font-semibold">No Biodatas Found</h3>
                   <p className="text-sm mt-1">
                     Try adjusting your filter criteria.
@@ -181,7 +181,7 @@ const AllBiodatas = () => {
 
                       <NavLink
                         to={`/biodata-details/${biodata._id}`}
-                        className="block text-center mt-3 w-full bg-pink-600 hover:bg-pink-700 text-white font-medium py-2 rounded"
+                        className="block text-center mt-3 w-full bg-rose-700 hover:bg-rose-500 text-white font-medium py-2 rounded"
                       >
                         View Profile
                       </NavLink>
@@ -200,7 +200,7 @@ const AllBiodatas = () => {
                   className={`px-4 py-2 text-sm rounded ${
                     page === 1
                       ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                      : "bg-pink-600 text-white hover:bg-pink-700"
+                      : "bg-rose-600 text-white hover:bg-rose-700"
                   }`}
                 >
                   Prev
@@ -212,7 +212,7 @@ const AllBiodatas = () => {
                     onClick={() => setPage(idx + 1)}
                     className={`px-3 py-1 text-sm rounded ${
                       page === idx + 1
-                        ? "bg-pink-700 text-white"
+                        ? "bg-rose-700 text-white"
                         : "bg-gray-200 hover:bg-gray-300"
                     }`}
                   >
@@ -228,7 +228,7 @@ const AllBiodatas = () => {
                   className={`px-4 py-2 text-sm rounded ${
                     page === totalPages
                       ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                      : "bg-pink-600 text-white hover:bg-pink-700"
+                      : "bg-rose-600 text-white hover:bg-rose-700"
                   }`}
                 >
                   Next

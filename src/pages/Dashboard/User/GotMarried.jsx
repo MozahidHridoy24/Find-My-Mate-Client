@@ -98,6 +98,16 @@ const GotMarried = () => {
                 placeholder="Enter Your Partner Biodata ID"
               />
             </div>
+            <div>
+              <label className="block mb-1 font-semibold text-[#8E44AD]">
+                Marriage Date
+              </label>
+              <input
+                type="date"
+                {...register("marriageDate", { required: true })}
+                className="input input-bordered w-full"
+              />
+            </div>
 
             <div>
               <label className="block mb-1 font-semibold text-[#8E44AD]">

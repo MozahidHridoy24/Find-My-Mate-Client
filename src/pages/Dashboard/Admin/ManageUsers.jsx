@@ -123,7 +123,7 @@ const ManageUsers = () => {
                   ) : (
                     <button
                       onClick={() => handleMakeAdmin(user._id)}
-                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-xs md:text-sm"
+                      className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-700 text-xs md:text-sm"
                     >
                       Make Admin
                     </button>
@@ -133,13 +133,11 @@ const ManageUsers = () => {
                 {/* Premium */}
                 <td className="p-3 text-center">
                   {user.role === "premium" ? (
-                    <span className="text-purple-600 font-semibold">
-                      Premium
-                    </span>
+                    <span className="text-rose-700 font-semibold">Premium</span>
                   ) : user.isPremiumRequested ? (
                     <button
                       onClick={() => handleMakePremium(user.email)}
-                      className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600 text-xs md:text-sm"
+                      className="bg-rose-500 text-white px-3 py-1 rounded hover:bg-rose-700 text-xs md:text-sm"
                     >
                       Make Premium
                     </button>

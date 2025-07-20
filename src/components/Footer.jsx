@@ -33,7 +33,10 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href="/dashboard" className="hover:text-[#FFDDEE] transition">
+              <a
+                href="/dashboard/home"
+                className="hover:text-[#FFDDEE] transition"
+              >
                 Dashboard
               </a>
             </li>

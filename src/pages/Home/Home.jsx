@@ -3,6 +3,7 @@ import Banner from "../../components/Banner";
 import PremiumMemberBiodata from "./PremiumMemberBiodata";
 import HowItWorks from "./HowItWorks";
 import SuccessCounterSection from "./SuccessCounterSection";
+import SuccessStorySection from "./SuccessStorySection";
 
 const Home = () => {
   return (
@@ -11,6 +12,7 @@ const Home = () => {
       <PremiumMemberBiodata></PremiumMemberBiodata>
       <HowItWorks></HowItWorks>
       <SuccessCounterSection></SuccessCounterSection>
+      <SuccessStorySection></SuccessStorySection>
     </div>
   );
 };

@@ -31,11 +31,11 @@ const PremiumMemberBiodata = () => {
         </h2>
 
         {/* Sort Dropdown */}
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-start m-8">
           <select
             onChange={(e) => setSortOrder(e.target.value)}
             value={sortOrder}
-            className="border px-3 py-1 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            className="border px-3 py-1 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-rose-400"
           >
             <option value="asc">Sort by Age: Ascending</option>
             <option value="desc">Sort by Age: Descending</option>
@@ -82,7 +82,7 @@ const PremiumMemberBiodata = () => {
 
                 <Link
                   to={`/biodata-details/${biodata._id}`}
-                  className="inline-block w-full text-center mt-3 bg-rose-700 hover:bg-rose-900 text-white font-semibold py-1.5 rounded transition"
+                  className="inline-block w-full text-center mt-3 bg-rose-700 hover:bg-rose-500 text-white font-semibold py-1.5 rounded transition"
                 >
                   View Profile
                 </Link>

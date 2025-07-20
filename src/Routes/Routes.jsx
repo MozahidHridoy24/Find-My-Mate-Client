@@ -21,6 +21,8 @@ import AdminSuccessStory from "../pages/Dashboard/Admin/AdminSuccessStory";
 import Forbidden from "../components/Forbidden";
 import AdminRoute from "./AdminRoute";
 import ErrorPage from "../components/ErrorPage";
+import AboutUs from "../pages/About/AboutUs";
+import Contact from "../pages/Contact/Contact";
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +46,14 @@ export const router = createBrowserRouter([
       {
         path: "forbidden",
         element: <Forbidden></Forbidden>,
+      },
+      {
+        path: "about",
+        element: <AboutUs></AboutUs>,
+      },
+      {
+        path: "contact",
+        element: <Contact></Contact>,
       },
       {
         path: "/biodatas",

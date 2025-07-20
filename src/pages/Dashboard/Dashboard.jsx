@@ -5,7 +5,6 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 
 const Dashboard = () => {
   const [role, isLoading] = useRole();
-  console.log(role);
 
   if (isLoading) return <LoadingSpinner></LoadingSpinner>;
 

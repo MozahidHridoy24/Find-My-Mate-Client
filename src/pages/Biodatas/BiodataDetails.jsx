@@ -13,7 +13,7 @@ const BiodataDetails = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const [role, isLoading] = useRole();
-  console.log(role);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,7 +48,6 @@ const BiodataDetails = () => {
       return res.data.filter((item) => item._id !== id).slice(0, 3);
     },
   });
-
   const handleAddToFavourites = async () => {
     const favData = {
       biodataId: biodata.biodataId,

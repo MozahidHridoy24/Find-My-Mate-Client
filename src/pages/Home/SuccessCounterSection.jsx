@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { FaUsers, FaVenus, FaMars, FaHeart } from "react-icons/fa";
 import CountUp from "react-countup";
 import { motion } from "motion/react";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const SuccessCounterSection = () => {
   const { data: stats = {}, isLoading } = useQuery({
@@ -13,7 +14,7 @@ const SuccessCounterSection = () => {
     },
   });
 
-  if (isLoading) return <div className="text-center py-10">Loading...</div>;
+  if (isLoading) return <LoadingSpinner></LoadingSpinner>;
 
   const counters = [
     {
@@ -65,11 +66,12 @@ const SuccessCounterSection = () => {
               <CountUp
                 start={0}
                 end={counter.value}
-                duration={2.5}
+                duration={5}
                 separator=","
               />
+              +
             </p>
-            <p className="text-purple-700 font-bold mt-2">{counter.title}</p>
+            <p className="text-rose-800 font-bold mt-2">{counter.title}</p>
           </motion.div>
         ))}
       </div>

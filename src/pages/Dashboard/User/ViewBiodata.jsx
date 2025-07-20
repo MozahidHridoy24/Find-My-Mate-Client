@@ -100,7 +100,7 @@ const ViewBiodata = () => {
 
   return (
     <motion.div
-      className="max-w-3xl mx-auto my-10 p-8 bg-white shadow-xl rounded-lg"
+      className="w-11/12 mx-auto my-2 p-8 bg-white shadow-xl rounded-lg"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}

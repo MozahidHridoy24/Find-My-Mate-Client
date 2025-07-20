@@ -11,6 +11,7 @@ import {
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import LoadingSpinner from "../../../components/LoadingSpinner";
+import axios from "axios";
 
 const stripePromise = loadStripe(import.meta.env.VITE_payment_Key);
 
@@ -49,9 +50,12 @@ const CheckoutForm = () => {
   const { data: clientSecret, isLoading: secretLoading } = useQuery({
     queryKey: ["contact-payment-intent"],
     queryFn: async () => {
-      const res = await axiosSecure.post("/create-payment-intent", {
-        premiumCost: 5,
-      });
+      const res = await axios.post(
+        "http://localhost:3000/create-payment-intent",
+        {
+          premiumCost: 5,
+        }
+      );
       return res.data.clientSecret;
     },
   });
@@ -83,15 +87,13 @@ const CheckoutForm = () => {
     } else if (paymentIntent.status === "succeeded") {
       try {
         // ✅ Save the contact request to DB
-        await axiosSecure.post("/contact-requests", {
+        await axios.post("http://localhost:3000/contact-requests", {
           biodataId: biodata.biodataId,
           userEmail: user.email,
           status: "pending",
-          paymentIntentId: paymentIntent.id,
-          createdAt: new Date(),
         });
 
-        await axiosSecure.post("/payments", {
+        await axios.post("http://localhost:3000/payments", {
           RequestedContactId: biodata.biodataId,
           email: user.email,
           amount: 5,
@@ -130,7 +132,7 @@ const CheckoutForm = () => {
         <label className="block text-gray-600 mb-1">Biodata ID</label>
         <input
           readOnly
-          value={biodata?.biodataId || "Loading..."}
+          value={biodata?.biodataId}
           className="w-full border border-gray-300 p-2 rounded bg-gray-100"
         />
       </div>

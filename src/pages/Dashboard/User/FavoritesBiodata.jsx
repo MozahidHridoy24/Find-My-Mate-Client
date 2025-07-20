@@ -66,8 +66,8 @@ const FavoritesBiodata = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      <h2 className="text-3xl font-bold mb-6 text-[#C2185B]">
+    <div className="w-11/12 mx-auto px-4 py-10">
+      <h2 className="text-3xl text-center font-bold mb-6 text-[#C2185B]">
         My Favourite Biodatas
       </h2>
       {favourites.length === 0 ? (

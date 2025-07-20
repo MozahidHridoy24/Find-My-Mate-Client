@@ -18,12 +18,15 @@ import ApproveContactRequest from "../pages/Dashboard/Admin/ApproveContactReques
 import Dashboard from "../pages/Dashboard/Dashboard";
 import GotMarried from "../pages/Dashboard/User/GotMarried";
 import AdminSuccessStory from "../pages/Dashboard/Admin/AdminSuccessStory";
+import Forbidden from "../components/Forbidden";
+import AdminRoute from "./AdminRoute";
+import ErrorPage from "../components/ErrorPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
-    errorElement: <h2>Error</h2>,
+    errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         index: true,
@@ -37,6 +40,10 @@ export const router = createBrowserRouter([
       {
         path: "register",
         element: <Register></Register>,
+      },
+      {
+        path: "forbidden",
+        element: <Forbidden></Forbidden>,
       },
       {
         path: "/biodatas",
@@ -75,19 +82,35 @@ export const router = createBrowserRouter([
       },
       {
         path: "manage-users",
-        element: <ManageUsers></ManageUsers>,
+        element: (
+          <AdminRoute>
+            <ManageUsers></ManageUsers>
+          </AdminRoute>
+        ),
       },
       {
         path: "approved-premium",
-        element: <ApprovedPremium></ApprovedPremium>,
+        element: (
+          <AdminRoute>
+            <ApprovedPremium></ApprovedPremium>
+          </AdminRoute>
+        ),
       },
       {
         path: "approved-contact-request",
-        element: <ApproveContactRequest></ApproveContactRequest>,
+        element: (
+          <AdminRoute>
+            <ApproveContactRequest></ApproveContactRequest>
+          </AdminRoute>
+        ),
       },
       {
         path: "success-story",
-        element: <AdminSuccessStory></AdminSuccessStory>,
+        element: (
+          <AdminRoute>
+            <AdminSuccessStory></AdminSuccessStory>
+          </AdminRoute>
+        ),
       },
       // user routes
       {

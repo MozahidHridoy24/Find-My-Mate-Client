@@ -36,6 +36,7 @@ const DashboardLayout = () => {
       : "block hover:text-purple-200";
 
   if (isLoading) return <LoadingSpinner />;
+  <title> Dashboard || Home</title>;
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row relative">

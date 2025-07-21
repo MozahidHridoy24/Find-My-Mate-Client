@@ -99,78 +99,81 @@ const ViewBiodata = () => {
   }
 
   return (
-    <motion.div
-      className="w-11/12 mx-auto my-2 p-8 bg-white shadow-xl rounded-lg"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <motion.h2
-        className="text-3xl font-bold text-center text-[#C2185B] mb-6"
-        initial={{ scale: 0.8 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 0.3 }}
+    <div>
+      <title>Dashboard || View Biodata</title>
+      <motion.div
+        className="w-11/12 mx-auto my-2 p-8 bg-white shadow-xl rounded-lg"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
       >
-        My Biodata
-      </motion.h2>
-
-      <div className="grid gap-6 grid-cols-1">
-        <div className="flex justify-center">
-          <img
-            src={biodata.image}
-            alt="Profile"
-            className="w-[80%] h-72 rounded-xl object-cover border-4 border-[#8E44AD]"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {[
-            ["Biodata Type", biodata.biodataType],
-            ["Name", biodata.name],
-            ["DOB", biodata.dob],
-            ["Height", biodata.height],
-            ["Weight", biodata.weight],
-            ["Age", biodata.age],
-            ["Occupation", biodata.occupation],
-            ["Race (Skin color)", biodata.race],
-            ["Father's Name", biodata.fatherName],
-            ["Mother's Name", biodata.motherName],
-            ["Permanent Division", biodata.permanentDivision],
-            ["Present Division", biodata.presentDivision],
-            ["Expected Partner Age", biodata.expectedPartnerAge],
-            ["Expected Partner Height", biodata.expectedPartnerHeight],
-            ["Expected Partner Weight", biodata.expectedPartnerWeight],
-            ["Email", biodata.email],
-            ["Phone", biodata.mobile],
-          ].map(([label, value], i) => (
-            <motion.div
-              key={label}
-              className="bg-[#F8F6F9] p-4 rounded-md shadow-sm"
-              initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.05 }}
-            >
-              <p className="font-medium text-[#8E44AD]">{label}:</p>
-              <p className="text-gray-800">{value}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-10 text-center">
-        <button
-          disabled={isButtonDisabled}
-          onClick={handleRequestPremium}
-          className={`${
-            isButtonDisabled
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-[#C2185B] hover:bg-[#8E44AD]"
-          } text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300`}
+        <motion.h2
+          className="text-3xl font-bold text-center text-[#C2185B] mb-6"
+          initial={{ scale: 0.8 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.3 }}
         >
-          {buttonText}
-        </button>
-      </div>
-    </motion.div>
+          My Biodata
+        </motion.h2>
+
+        <div className="grid gap-6 grid-cols-1">
+          <div className="flex justify-center">
+            <img
+              src={biodata.image}
+              alt="Profile"
+              className="w-[80%] h-72 rounded-xl object-cover border-4 border-[#8E44AD]"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              ["Biodata Type", biodata.biodataType],
+              ["Name", biodata.name],
+              ["DOB", biodata.dob],
+              ["Height", biodata.height],
+              ["Weight", biodata.weight],
+              ["Age", biodata.age],
+              ["Occupation", biodata.occupation],
+              ["Race (Skin color)", biodata.race],
+              ["Father's Name", biodata.fatherName],
+              ["Mother's Name", biodata.motherName],
+              ["Permanent Division", biodata.permanentDivision],
+              ["Present Division", biodata.presentDivision],
+              ["Expected Partner Age", biodata.expectedPartnerAge],
+              ["Expected Partner Height", biodata.expectedPartnerHeight],
+              ["Expected Partner Weight", biodata.expectedPartnerWeight],
+              ["Email", biodata.email],
+              ["Phone", biodata.mobile],
+            ].map(([label, value], i) => (
+              <motion.div
+                key={label}
+                className="bg-[#F8F6F9] p-4 rounded-md shadow-sm"
+                initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.05 }}
+              >
+                <p className="font-medium text-[#8E44AD]">{label}:</p>
+                <p className="text-gray-800">{value}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-10 text-center">
+          <button
+            disabled={isButtonDisabled}
+            onClick={handleRequestPremium}
+            className={`${
+              isButtonDisabled
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-[#C2185B] hover:bg-[#8E44AD]"
+            } text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300`}
+          >
+            {buttonText}
+          </button>
+        </div>
+      </motion.div>
+    </div>
   );
 };
 

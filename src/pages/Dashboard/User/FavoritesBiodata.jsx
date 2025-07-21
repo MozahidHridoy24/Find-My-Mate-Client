@@ -66,47 +66,53 @@ const FavoritesBiodata = () => {
   }
 
   return (
-    <div className="w-11/12 mx-auto py-10">
-      <h2 className="text-3xl text-center font-bold mb-6 text-[#C2185B]">
-        My Favourite Biodatas
-      </h2>
-      {favourites.length === 0 ? (
-        <p className="text-gray-500 text-center py-10">
-          You have no favourite biodatas yet.
-        </p>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full border border-gray-300 bg-white shadow">
-            <thead className="bg-[#C2185B] text-white">
-              <tr>
-                <th className="py-3 px-4 border">Name</th>
-                <th className="py-3 px-4 border">Biodata ID</th>
-                <th className="py-3 px-4 border">Permanent Address</th>
-                <th className="py-3 px-4 border">Occupation</th>
-                <th className="py-3 px-4 border">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {favourites.map((fav) => (
-                <tr key={fav._id} className="text-center hover:bg-gray-100">
-                  <td className="py-2 px-4 border">{fav.name}</td>
-                  <td className="py-2 px-4 border">{fav.biodataId}</td>
-                  <td className="py-2 px-4 border">{fav.permanentDivision}</td>
-                  <td className="py-2 px-4 border">{fav.occupation}</td>
-                  <td className="py-2 px-4 border">
-                    <button
-                      onClick={() => handleDelete(fav.biodataId)}
-                      className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded"
-                    >
-                      Delete
-                    </button>
-                  </td>
+    <div>
+      <title>Dashboard || Favorites Biodata</title>
+
+      <div className="w-11/12 mx-auto py-10">
+        <h2 className="text-3xl text-center font-bold mb-6 text-[#C2185B]">
+          My Favourite Biodatas
+        </h2>
+        {favourites.length === 0 ? (
+          <p className="text-gray-500 text-center py-10">
+            You have no favourite biodatas yet.
+          </p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full border border-gray-300 bg-white shadow">
+              <thead className="bg-[#C2185B] text-white">
+                <tr>
+                  <th className="py-3 px-4 border">Name</th>
+                  <th className="py-3 px-4 border">Biodata ID</th>
+                  <th className="py-3 px-4 border">Permanent Address</th>
+                  <th className="py-3 px-4 border">Occupation</th>
+                  <th className="py-3 px-4 border">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              </thead>
+              <tbody>
+                {favourites.map((fav) => (
+                  <tr key={fav._id} className="text-center hover:bg-gray-100">
+                    <td className="py-2 px-4 border">{fav.name}</td>
+                    <td className="py-2 px-4 border">{fav.biodataId}</td>
+                    <td className="py-2 px-4 border">
+                      {fav.permanentDivision}
+                    </td>
+                    <td className="py-2 px-4 border">{fav.occupation}</td>
+                    <td className="py-2 px-4 border">
+                      <button
+                        onClick={() => handleDelete(fav.biodataId)}
+                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

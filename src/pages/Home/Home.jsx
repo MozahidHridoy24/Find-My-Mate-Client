@@ -8,6 +8,7 @@ import SuccessStorySection from "./SuccessStorySection";
 const Home = () => {
   return (
     <div>
+      <title>Find My Mate || Home</title>
       <Banner></Banner>
       <PremiumMemberBiodata></PremiumMemberBiodata>
       <HowItWorks></HowItWorks>

@@ -36,7 +36,6 @@ const DashboardLayout = () => {
       : "block hover:text-purple-200";
 
   if (isLoading) return <LoadingSpinner />;
-  <title> Dashboard || Home</title>;
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row relative">
@@ -54,7 +53,7 @@ const DashboardLayout = () => {
       {/* Sidebar */}
       <aside
         ref={drawerRef}
-        className={`fixed top-14 left-0 h-full w-1/2 z-50 bg-[#C2185B]/90 text-white p-6 space-y-4 transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${
+        className={`fixed top-0 left-0 w-64 z-50 bg-[#C2185B]/90 text-white py-15 px-6 mx-auto space-y-4 transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${
           isDrawerOpen ? "translate-x-0" : "-translate-x-full"
         } md:block`}
       >

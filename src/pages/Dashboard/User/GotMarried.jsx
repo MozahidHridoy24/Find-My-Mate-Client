@@ -61,102 +61,106 @@ const GotMarried = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      <div className="grid md:grid-cols-2 gap-10 items-center bg-white shadow-2xl rounded-xl p-6 md:p-12">
-        {/* Lottie Animation */}
-        <div className="hidden md:block">
-          <Lottie animationData={weddingAnimation} loop={true} />
-        </div>
+    <div>
+      <title>Dashboard || Got Married</title>
 
-        {/* Form */}
-        <div>
-          <h2 className="text-3xl font-bold mb-6 text-center text-[#C2185B]">
-            💍 Share Your Success Story
-          </h2>
+      <div className="w-11/12 mx-auto px-4 py-10">
+        <div className="grid md:grid-cols-2 gap-10 items-center bg-white shadow-2xl rounded-xl p-6 md:p-12">
+          {/* Lottie Animation */}
+          <div className="hidden md:block">
+            <Lottie animationData={weddingAnimation} loop={true} />
+          </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            <div>
-              <label className="block mb-1 font-semibold text-[#8E44AD]">
-                Your Biodata ID
-              </label>
-              <input
-                type="text"
-                {...register("selfBiodataId", { required: true })}
-                className="input input-bordered w-full"
-                placeholder="Enter Your Biodata ID"
-              />
-            </div>
+          {/* Form */}
+          <div>
+            <h2 className="text-3xl font-bold mb-6 text-center text-[#C2185B]">
+              💍 Share Your Success Story
+            </h2>
 
-            <div>
-              <label className="block mb-1 font-semibold text-[#8E44AD]">
-                Partner's Biodata ID
-              </label>
-              <input
-                type="text"
-                {...register("partnerBiodataId", { required: true })}
-                className="input input-bordered w-full"
-                placeholder="Enter Your Partner Biodata ID"
-              />
-            </div>
-            <div>
-              <label className="block mb-1 font-semibold text-[#8E44AD]">
-                Marriage Date
-              </label>
-              <input
-                type="date"
-                {...register("marriageDate", { required: true })}
-                className="input input-bordered w-full"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1 font-semibold text-[#8E44AD]">
-                Upload Couple Image
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="file-input file-input-bordered w-full"
-              />
-              {uploading && (
-                <p className="text-sm mt-2 text-yellow-600">
-                  Uploading image...
-                </p>
-              )}
-            </div>
-
-            {previewImage && (
-              <div className="mt-4">
-                <img
-                  src={previewImage}
-                  alt="Couple Preview"
-                  className="w-full rounded-md shadow-md"
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+              <div>
+                <label className="block mb-1 font-semibold text-[#8E44AD]">
+                  Your Biodata ID
+                </label>
+                <input
+                  type="text"
+                  {...register("selfBiodataId", { required: true })}
+                  className="input input-bordered w-full"
+                  placeholder="Enter Your Biodata ID"
                 />
               </div>
-            )}
 
-            <input type="hidden" {...register("image", { required: true })} />
+              <div>
+                <label className="block mb-1 font-semibold text-[#8E44AD]">
+                  Partner's Biodata ID
+                </label>
+                <input
+                  type="text"
+                  {...register("partnerBiodataId", { required: true })}
+                  className="input input-bordered w-full"
+                  placeholder="Enter Your Partner Biodata ID"
+                />
+              </div>
+              <div>
+                <label className="block mb-1 font-semibold text-[#8E44AD]">
+                  Marriage Date
+                </label>
+                <input
+                  type="date"
+                  {...register("marriageDate", { required: true })}
+                  className="input input-bordered w-full"
+                />
+              </div>
 
-            <div>
-              <label className="block mb-1 font-semibold text-[#8E44AD]">
-                Your Review
-              </label>
-              <textarea
-                {...register("review", { required: true })}
-                rows={5}
-                className="textarea textarea-bordered w-full"
-                placeholder="Share your feelings about using this website..."
-              ></textarea>
-            </div>
+              <div>
+                <label className="block mb-1 font-semibold text-[#8E44AD]">
+                  Upload Couple Image
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="file-input file-input-bordered w-full"
+                />
+                {uploading && (
+                  <p className="text-sm mt-2 text-yellow-600">
+                    Uploading image...
+                  </p>
+                )}
+              </div>
 
-            <button
-              type="submit"
-              className="p-2 rounded-xl w-full bg-rose-700 hover:bg-purple-700 text-white font-semibold flex items-center justify-center gap-2"
-            >
-              <FaUpload /> Submit Story
-            </button>
-          </form>
+              {previewImage && (
+                <div className="mt-4">
+                  <img
+                    src={previewImage}
+                    alt="Couple Preview"
+                    className="w-full rounded-md shadow-md"
+                  />
+                </div>
+              )}
+
+              <input type="hidden" {...register("image", { required: true })} />
+
+              <div>
+                <label className="block mb-1 font-semibold text-[#8E44AD]">
+                  Your Review
+                </label>
+                <textarea
+                  {...register("review", { required: true })}
+                  rows={5}
+                  className="textarea textarea-bordered w-full"
+                  placeholder="Share your feelings about using this website..."
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                className="p-2 rounded-xl w-full bg-rose-700 hover:bg-purple-700 text-white font-semibold flex items-center justify-center gap-2"
+              >
+                <FaUpload /> Submit Story
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>

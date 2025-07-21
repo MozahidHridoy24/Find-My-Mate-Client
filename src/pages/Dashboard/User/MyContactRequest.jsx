@@ -53,83 +53,87 @@ const MyContactRequest = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="w-11/12 mx-auto">
-      <h2 className="text-3xl font-bold text-center mb-6 text-[#C2185B]">
-        My Contact Requests
-      </h2>
+    <div>
+      <title>Dashboard || My Contact Requests</title>
 
-      <div className="overflow-x-auto bg-white shadow rounded-lg">
-        <table className="min-w-full divide-y divide-gray-200 text-sm">
-          <thead className="bg-gray-50 text-gray-700 uppercase text-xs">
-            <tr>
-              <th className="px-4 sm:px-6 py-3 text-left">#</th>
-              <th className="px-4 sm:px-6 py-3 text-left">Name</th>
-              <th className="px-4 sm:px-6 py-3 text-left">Biodata ID</th>
-              <th className="px-4 sm:px-6 py-3 text-left">Status</th>
-              <th className="px-4 sm:px-6 py-3 text-left">Mobile No</th>
-              <th className="px-4 sm:px-6 py-3 text-left">Email</th>
-              <th className="px-4 sm:px-6 py-3 text-left">Action</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200 text-gray-700">
-            {requests.length > 0 ? (
-              requests.map((req, index) => (
-                <tr key={req.biodataId} className="hover:bg-gray-50">
-                  <td className="px-4 sm:px-6 py-3">{index + 1}</td>
-                  <td className="px-4 sm:px-6 py-3">{req.name}</td>
-                  <td className="px-4 sm:px-6 py-3">{req.biodataId}</td>
-                  <td className="px-4 sm:px-6 py-3">
-                    <span
-                      className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${
-                        req.status === "approved"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-yellow-100 text-yellow-700"
-                      }`}
-                    >
-                      {req.status}
-                    </span>
-                  </td>
-                  <td className="px-4 sm:px-6 py-3">
-                    {req.status === "approved" ? (
-                      <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 text-xs rounded-full font-medium">
-                        {req.mobile}
+      <div className="w-11/12 mx-auto">
+        <h2 className="text-3xl font-bold text-center mb-6 text-[#C2185B]">
+          My Contact Requests
+        </h2>
+
+        <div className="overflow-x-auto bg-white shadow rounded-lg">
+          <table className="min-w-full divide-y divide-gray-200 text-sm">
+            <thead className="bg-gray-50 text-gray-700 uppercase text-xs">
+              <tr>
+                <th className="px-4 sm:px-6 py-3 text-left">#</th>
+                <th className="px-4 sm:px-6 py-3 text-left">Name</th>
+                <th className="px-4 sm:px-6 py-3 text-left">Biodata ID</th>
+                <th className="px-4 sm:px-6 py-3 text-left">Status</th>
+                <th className="px-4 sm:px-6 py-3 text-left">Mobile No</th>
+                <th className="px-4 sm:px-6 py-3 text-left">Email</th>
+                <th className="px-4 sm:px-6 py-3 text-left">Action</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200 text-gray-700">
+              {requests.length > 0 ? (
+                requests.map((req, index) => (
+                  <tr key={req.biodataId} className="hover:bg-gray-50">
+                    <td className="px-4 sm:px-6 py-3">{index + 1}</td>
+                    <td className="px-4 sm:px-6 py-3">{req.name}</td>
+                    <td className="px-4 sm:px-6 py-3">{req.biodataId}</td>
+                    <td className="px-4 sm:px-6 py-3">
+                      <span
+                        className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${
+                          req.status === "approved"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-yellow-100 text-yellow-700"
+                        }`}
+                      >
+                        {req.status}
                       </span>
-                    ) : (
-                      <span className="text-gray-400 italic">Hidden</span>
-                    )}
-                  </td>
-                  <td className="px-4 sm:px-6 py-3">
-                    {req.status === "approved" ? (
-                      <span className="inline-block bg-purple-100 text-purple-800 px-3 py-1 text-xs rounded-full font-medium">
-                        {req.email}
-                      </span>
-                    ) : (
-                      <span className="text-gray-400 italic">Hidden</span>
-                    )}
-                  </td>
-                  <td className="px-4 sm:px-6 py-3">
-                    <button
-                      onClick={() => handleDelete(req.biodataId)}
-                      className="text-red-600 hover:text-red-800 transition"
-                      title="Delete"
-                    >
-                      <FaTrashAlt />
-                    </button>
+                    </td>
+                    <td className="px-4 sm:px-6 py-3">
+                      {req.status === "approved" ? (
+                        <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 text-xs rounded-full font-medium">
+                          {req.mobile}
+                        </span>
+                      ) : (
+                        <span className="text-gray-400 italic">Hidden</span>
+                      )}
+                    </td>
+                    <td className="px-4 sm:px-6 py-3">
+                      {req.status === "approved" ? (
+                        <span className="inline-block bg-purple-100 text-purple-800 px-3 py-1 text-xs rounded-full font-medium">
+                          {req.email}
+                        </span>
+                      ) : (
+                        <span className="text-gray-400 italic">Hidden</span>
+                      )}
+                    </td>
+                    <td className="px-4 sm:px-6 py-3">
+                      <button
+                        onClick={() => handleDelete(req.biodataId)}
+                        className="text-red-600 hover:text-red-800 transition"
+                        title="Delete"
+                      >
+                        <FaTrashAlt />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan="7"
+                    className="text-center py-6 text-gray-500 italic"
+                  >
+                    No contact requests found.
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan="7"
-                  className="text-center py-6 text-gray-500 italic"
-                >
-                  No contact requests found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

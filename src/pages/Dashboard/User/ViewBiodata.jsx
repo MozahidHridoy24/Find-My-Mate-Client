@@ -119,7 +119,7 @@ const ViewBiodata = () => {
           <img
             src={biodata.image}
             alt="Profile"
-            className="w-[80%] h-60 rounded-xl object-cover border-4 border-[#8E44AD]"
+            className="w-[80%] h-72 rounded-xl object-cover border-4 border-[#8E44AD]"
           />
         </div>
 

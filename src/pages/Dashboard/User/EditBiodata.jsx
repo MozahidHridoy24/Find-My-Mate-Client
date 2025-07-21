@@ -14,6 +14,7 @@ const EditBiodata = () => {
   const queryClient = useQueryClient();
 
   const [previewImg, setPreviewImg] = useState("");
+  const [saving, setSaving] = useState(false);
 
   const { data: biodata, isLoading } = useQuery({
     queryKey: ["biodata", user?.email],
@@ -63,6 +64,7 @@ const EditBiodata = () => {
 
   const onSubmit = async (data) => {
     try {
+      setSaving(true);
       data.email = user?.email;
 
       if (data.imageFile && data.imageFile.length > 0) {
@@ -95,6 +97,8 @@ const EditBiodata = () => {
     } catch (err) {
       console.error(err);
       Swal.fire("Error", "Something went wrong!", "error");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -492,9 +496,14 @@ const EditBiodata = () => {
         <div>
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-[#C2185B] to-[#8E44AD] text-white font-extrabold text-lg py-4 rounded-xl shadow-lg hover:scale-105 transform transition-transform duration-300"
+            disabled={saving}
+            className={`w-full text-white font-extrabold text-lg py-4 rounded-xl shadow-lg transition-transform duration-300 ${
+              saving
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-gradient-to-r from-[#C2185B] to-[#8E44AD] hover:scale-105"
+            }`}
           >
-            Save & Publish Now
+            {saving ? "Publishing..." : "Save & Publish Now"}
           </button>
         </div>
       </form>

@@ -53,7 +53,7 @@ const MyContactRequest = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="p-4 sm:p-6 max-w-5xl mx-auto">
+    <div className="w-11/12 mx-auto">
       <h2 className="text-3xl font-bold text-center mb-6 text-[#C2185B]">
         My Contact Requests
       </h2>

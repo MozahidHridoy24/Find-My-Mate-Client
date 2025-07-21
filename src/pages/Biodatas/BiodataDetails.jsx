@@ -13,13 +13,13 @@ const BiodataDetails = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const [role, isLoading] = useRole();
-
   const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
 
+  // Fetch selected biodata
   const {
     data: biodata,
     isLoading: biodataLoading,
@@ -34,10 +34,18 @@ const BiodataDetails = () => {
     },
   });
 
-  useEffect(() => {
-    if (id) refetch();
-  }, [id, refetch]);
+  // Fetch current user's own biodata
+  const { data: myBiodata, isLoading: myBiodataLoading } = useQuery({
+    queryKey: ["my-biodata", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/biodatas/user/${user.email}`);
+      return res.data;
+    },
+    retry: false,
+  });
 
+  // Fetch similar biodatas
   const { data: similar = [] } = useQuery({
     queryKey: ["similar", biodata?.biodataType],
     enabled: !!biodata?.biodataType,
@@ -48,6 +56,11 @@ const BiodataDetails = () => {
       return res.data.filter((item) => item._id !== id).slice(0, 3);
     },
   });
+
+  useEffect(() => {
+    if (id) refetch();
+  }, [id, refetch]);
+
   const handleAddToFavourites = async () => {
     const favData = {
       biodataId: biodata.biodataId,
@@ -70,16 +83,14 @@ const BiodataDetails = () => {
       if (err.response?.status === 409) {
         Swal.fire({
           title: "Info",
-          text:
-            err.response.data.message ||
-            "This biodata is already in your favourites.",
+          text: err.response.data.message || "Already in favourites.",
           icon: "info",
           confirmButtonColor: "#C2185B",
         });
       } else {
         Swal.fire({
           title: "Error!",
-          text: "Something went wrong. Please try again later.",
+          text: "Something went wrong.",
           icon: "error",
           confirmButtonColor: "#C2185B",
         });
@@ -90,7 +101,12 @@ const BiodataDetails = () => {
   const handleRequestContact = () => {
     navigate(`/checkout/${biodata._id}`);
   };
-  const loading = isLoading || biodataLoading;
+
+  const handleCompleteBiodata = () => {
+    navigate("/dashboard/edit-biodata");
+  };
+
+  const loading = isLoading || biodataLoading || myBiodataLoading;
   if (loading) return <LoadingSpinner />;
   if (isError || !biodata)
     return (
@@ -161,8 +177,14 @@ const BiodataDetails = () => {
               </div>
             )}
           </div>
+          {/* Complete Your Biodata Notice */}
+          {!myBiodata && (
+            <div className="bg-red-100 text-red-700 border border-red-400 p-4 rounded mb-4">
+              ⚠️ Please complete your biodata first to send a contact request.
+            </div>
+          )}
 
-          {/* Buttons */}
+          {/* Action Buttons */}
           <div className="flex flex-wrap gap-4">
             <button
               onClick={handleAddToFavourites}
@@ -171,62 +193,71 @@ const BiodataDetails = () => {
               Add to Favourites
             </button>
 
-            {role !== "premium" && (
-              <button
-                onClick={handleRequestContact}
-                className="bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600 transition flex-1 sm:flex-none"
-              >
-                Request Contact Info
-              </button>
-            )}
+            {role !== "premium" &&
+              (!myBiodata ? (
+                <button
+                  onClick={handleCompleteBiodata}
+                  className="bg-purple-500 text-white px-6 py-2 rounded hover:bg-purple-600 transition flex-1 sm:flex-none"
+                >
+                  Complete Your Biodata
+                </button>
+              ) : (
+                <button
+                  onClick={handleRequestContact}
+                  className="bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600 transition flex-1 sm:flex-none"
+                >
+                  Request Contact Info
+                </button>
+              ))}
           </div>
         </div>
       </div>
 
       {/* Similar Biodatas */}
-      <section className="mt-16">
-        <h2 className="text-3xl font-bold mb-6 text-[#8E44AD]">
-          Similar Biodatas
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {similar.map((bio) => (
-            <motion.div
-              key={bio._id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              whileHover={{ scale: 1.05 }}
-              className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition cursor-pointer"
-            >
-              <img
-                src={bio.image}
-                alt={bio.name}
-                className="w-full h-56 object-cover"
-              />
-              <div className="p-4">
-                <h3 className="text-xl font-semibold mb-1">{bio.name}</h3>
-                <p className="text-gray-600 mb-1">
-                  <strong>Age:</strong> {bio.age}
-                </p>
-                <p className="text-gray-600 mb-2">
-                  <strong>Division:</strong> {bio.permanentDivision}
-                </p>
-                <NavLink
-                  to={`/biodata-details/${bio._id}`}
-                  className="block w-full bg-[#C2185B] text-white text-center py-2 rounded hover:bg-[#8E44AD] font-semibold"
-                >
-                  View Profile
-                </NavLink>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+      {similar.length > 0 && (
+        <section className="mt-16">
+          <h2 className="text-3xl font-bold mb-6 text-[#8E44AD]">
+            Similar Biodatas
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            {similar.map((bio) => (
+              <motion.div
+                key={bio._id}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ scale: 1.05 }}
+                className="bg-white rounded-lg shadow-md overflow-hidden border hover:shadow-lg transition cursor-pointer"
+              >
+                <img
+                  src={bio.image}
+                  alt={bio.name}
+                  className="w-full h-56 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="text-xl font-semibold mb-1">{bio.name}</h3>
+                  <p className="text-gray-600 mb-1">
+                    <strong>Age:</strong> {bio.age}
+                  </p>
+                  <p className="text-gray-600 mb-2">
+                    <strong>Division:</strong> {bio.permanentDivision}
+                  </p>
+                  <NavLink
+                    to={`/biodata-details/${bio._id}`}
+                    className="block w-full bg-[#C2185B] text-white text-center py-2 rounded hover:bg-[#8E44AD] font-semibold"
+                  >
+                    View Profile
+                  </NavLink>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+      )}
     </motion.div>
   );
 };
 
-// Helper for info rows
+// Helper component
 const InfoItem = ({ label, value }) => (
   <div>
     <p className="text-gray-500 font-semibold">{label}</p>

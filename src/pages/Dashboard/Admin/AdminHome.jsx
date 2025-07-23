@@ -32,7 +32,7 @@ const AdminHome = () => {
     <div>
       <title>Dashboard || Home</title>
       {/* Go to Website Button */}
-      <div className="flex justify-end mb-6">
+      <div className="flex justify-end mb-6 py-4">
         <Link
           to="/"
           className="bg-[#C2185B] text-white px-6 py-2 rounded-md hover:bg-[#a0144d] transition"
@@ -106,7 +106,7 @@ const AdminHome = () => {
           </div>
         </div>
       </div>
-      <div>
+      <div className="py-4">
         {/* Pie Chart */}
         <PieCharts stats={stats} />
       </div>

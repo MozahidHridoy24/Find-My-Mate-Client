@@ -2,11 +2,11 @@
 
 **Find My Mate** is a modern, secure, and feature-rich matrimonial web application designed to help users find their ideal life partners. Built using the latest technologies with a responsive and intuitive interface, it provides a smooth experience for both normal and premium users. Admins can manage biodatas, success stories, and contact requests from a powerful dashboard.
 
-🔗 **Live Website:** [https://findmymate.web.app](https://findmymate.web.app)  
+🔗 **Live Website:** [https://find-my-mate-24.web.app/](https://find-my-mate-24.web.app/)  
 🔐 **Admin Login:**
 
-- 📧 Email: `admin@perfectmatch.com`
-- 🔐 Password: `Admin@123`
+- 📧 Email: `hridoy1@gmail.com`
+- 🔐 Password: `H12345`
 
 ---
 
@@ -55,4 +55,3 @@
 ### 💳 Payments:
 
 - 💰 **Stripe** integration for secure transactions
-

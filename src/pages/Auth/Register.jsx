@@ -32,7 +32,10 @@ const Register = () => {
         last_log_in: new Date().toISOString(),
       };
 
-      await axios.post("http://localhost:3000/users", userInfo);
+      await axios.post(
+        "https://find-my-mate-server.vercel.app/users",
+        userInfo
+      );
 
       await updateUserProfile({ displayName: data.name, photoURL: profilePic });
 

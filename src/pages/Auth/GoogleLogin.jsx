@@ -25,7 +25,7 @@ const GoogleLogin = () => {
       };
 
       // Save user info to DB
-      await axios.post("http://localhost:3000/users", userInfo);
+      await axios.post("https://find-my-mate-server.vercel.app/users", userInfo);
 
       Swal.fire({
         icon: "success",

@@ -51,6 +51,7 @@ const ApprovedPremium = () => {
 
   return (
     <div className="p-6">
+      <title>Dashboard || Approved Premium</title>
       <h2 className="text-3xl font-bold mb-6 text-center text-[#C2185B]">
         Approved Premium Requests
       </h2>

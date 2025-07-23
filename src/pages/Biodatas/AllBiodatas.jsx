@@ -20,9 +20,12 @@ const AllBiodatas = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["biodatas", filters, page],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:3000/biodatas", {
-        params: { ...filters, page, limit },
-      });
+      const res = await axios.get(
+        "https://find-my-mate-server.vercel.app/biodatas",
+        {
+          params: { ...filters, page, limit },
+        }
+      );
       return res.data;
     },
     keepPreviousData: true,

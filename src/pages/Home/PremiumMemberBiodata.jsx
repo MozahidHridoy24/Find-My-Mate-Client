@@ -11,7 +11,9 @@ const PremiumMemberBiodata = () => {
   const { data: premiumBiodatas = [], isLoading } = useQuery({
     queryKey: ["premium-biodatas"],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:3000/premium-biodatas`);
+      const res = await axios.get(
+        `https://find-my-mate-server.vercel.app/premium-biodatas`
+      );
       return res.data.filter((biodata) => biodata.premiumStatus === "approved");
     },
   });

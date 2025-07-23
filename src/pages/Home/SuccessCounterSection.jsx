@@ -9,7 +9,9 @@ const SuccessCounterSection = () => {
   const { data: stats = {}, isLoading } = useQuery({
     queryKey: ["dashboard-stats"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:3000/dashboard-stats");
+      const res = await axios.get(
+        "https://find-my-mate-server.vercel.app/dashboard-stats"
+      );
       return res.data;
     },
   });

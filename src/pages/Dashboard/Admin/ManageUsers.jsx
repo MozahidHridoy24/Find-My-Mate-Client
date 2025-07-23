@@ -78,79 +78,86 @@ const ManageUsers = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="p-4 md:p-6">
-      <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-[#C2185B]">
-        Manage Users
-      </h2>
+    <div>
+      <title>Dashboard || Manage Users</title>
+      <div className="p-4 md:p-6">
+        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-[#C2185B]">
+          Manage Users
+        </h2>
 
-      {/* Search */}
-      <div className="mb-6 flex justify-center">
-        <input
-          type="text"
-          placeholder="Search by name"
-          className="border border-gray-300 p-2 md:p-3 rounded w-full max-w-md focus:outline-none focus:ring-2 focus:ring-[#C2185B]"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
+        {/* Search */}
+        <div className="mb-6 flex justify-center">
+          <input
+            type="text"
+            placeholder="Search by name"
+            className="border border-gray-300 p-2 md:p-3 rounded w-full max-w-md focus:outline-none focus:ring-2 focus:ring-[#C2185B]"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full text-sm border rounded shadow-lg bg-white">
-          <thead className="bg-[#8E44AD] text-white text-left">
-            <tr>
-              <th className="p-3">#</th>
-              <th className="p-3">Name</th>
-              <th className="p-3">Email</th>
-              <th className="p-3 text-center">Admin</th>
-              <th className="p-3 text-center">Premium</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user, idx) => (
-              <tr
-                key={user._id}
-                className="border-b hover:bg-gray-50 transition-all"
-              >
-                <td className="p-3">{idx + 1}</td>
-                <td className="p-3">{user.name}</td>
-                <td className="p-3">{user.email}</td>
-
-                {/* Admin */}
-                <td className="p-3 text-center">
-                  {user.role === "admin" ? (
-                    <span className="text-green-600 font-semibold">Admin</span>
-                  ) : (
-                    <button
-                      onClick={() => handleMakeAdmin(user._id)}
-                      className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-700 text-xs md:text-sm"
-                    >
-                      Make Admin
-                    </button>
-                  )}
-                </td>
-
-                {/* Premium */}
-                <td className="p-3 text-center">
-                  {user.role === "premium" ? (
-                    <span className="text-rose-700 font-semibold">Premium</span>
-                  ) : user.isPremiumRequested ? (
-                    <button
-                      onClick={() => handleMakePremium(user.email)}
-                      className="bg-rose-500 text-white px-3 py-1 rounded hover:bg-rose-700 text-xs md:text-sm"
-                    >
-                      Make Premium
-                    </button>
-                  ) : (
-                    <span className="text-gray-400 italic text-xs">
-                      No Request
-                    </span>
-                  )}
-                </td>
+        {/* Table */}
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-sm border rounded shadow-lg bg-white">
+            <thead className="bg-[#8E44AD] text-white text-left">
+              <tr>
+                <th className="p-3">#</th>
+                <th className="p-3">Name</th>
+                <th className="p-3">Email</th>
+                <th className="p-3 text-center">Admin</th>
+                <th className="p-3 text-center">Premium</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {users.map((user, idx) => (
+                <tr
+                  key={user._id}
+                  className="border-b hover:bg-gray-50 transition-all"
+                >
+                  <td className="p-3">{idx + 1}</td>
+                  <td className="p-3">{user.name}</td>
+                  <td className="p-3">{user.email}</td>
+
+                  {/* Admin */}
+                  <td className="p-3 text-center">
+                    {user.role === "admin" ? (
+                      <span className="text-green-600 font-semibold">
+                        Admin
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => handleMakeAdmin(user._id)}
+                        className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-700 text-xs md:text-sm"
+                      >
+                        Make Admin
+                      </button>
+                    )}
+                  </td>
+
+                  {/* Premium */}
+                  <td className="p-3 text-center">
+                    {user.role === "premium" ? (
+                      <span className="text-rose-700 font-semibold">
+                        Premium
+                      </span>
+                    ) : user.isPremiumRequested ? (
+                      <button
+                        onClick={() => handleMakePremium(user.email)}
+                        className="bg-rose-500 text-white px-3 py-1 rounded hover:bg-rose-700 text-xs md:text-sm"
+                      >
+                        Make Premium
+                      </button>
+                    ) : (
+                      <span className="text-gray-400 italic text-xs">
+                        No Request
+                      </span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

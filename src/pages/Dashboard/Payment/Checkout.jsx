@@ -51,7 +51,7 @@ const CheckoutForm = () => {
     queryKey: ["contact-payment-intent"],
     queryFn: async () => {
       const res = await axios.post(
-        "http://localhost:3000/create-payment-intent",
+        "https://find-my-mate-server.vercel.app/create-payment-intent",
         {
           premiumCost: 5,
         }
@@ -87,13 +87,16 @@ const CheckoutForm = () => {
     } else if (paymentIntent.status === "succeeded") {
       try {
         // ✅ Save the contact request to DB
-        await axios.post("http://localhost:3000/contact-requests", {
-          biodataId: biodata.biodataId,
-          userEmail: user.email,
-          status: "pending",
-        });
+        await axios.post(
+          "https://find-my-mate-server.vercel.app/contact-requests",
+          {
+            biodataId: biodata.biodataId,
+            userEmail: user.email,
+            status: "pending",
+          }
+        );
 
-        await axios.post("http://localhost:3000/payments", {
+        await axios.post("https://find-my-mate-server.vercel.app/payments", {
           RequestedContactId: biodata.biodataId,
           email: user.email,
           amount: 5,

@@ -11,7 +11,9 @@ const SuccessStorySection = () => {
   const { data: stories = [], isLoading } = useQuery({
     queryKey: ["success-stories"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:3000/success-story");
+      const res = await axios.get(
+        "https://find-my-mate-server.vercel.app/success-story"
+      );
       return res.data;
     },
   });

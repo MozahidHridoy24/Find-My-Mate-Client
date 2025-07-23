@@ -30,6 +30,7 @@ const AdminHome = () => {
 
   return (
     <div>
+      <title>Dashboard || Home</title>
       {/* Go to Website Button */}
       <div className="flex justify-end mb-6">
         <Link

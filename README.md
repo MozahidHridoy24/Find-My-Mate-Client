@@ -1,12 +1,58 @@
-# React + Vite
+# 💍 Find My Mate - Matrimony Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Find My Mate** is a modern, secure, and feature-rich matrimonial web application designed to help users find their ideal life partners. Built using the latest technologies with a responsive and intuitive interface, it provides a smooth experience for both normal and premium users. Admins can manage biodatas, success stories, and contact requests from a powerful dashboard.
 
-Currently, two official plugins are available:
+🔗 **Live Website:** [https://findmymate.web.app](https://findmymate.web.app)  
+🔐 **Admin Login:**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📧 Email: `admin@perfectmatch.com`
+- 🔐 Password: `Admin@123`
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Features
+
+✨ Elegant and **responsive UI/UX** for all screen sizes  
+🧑‍💼 Role-based **dashboard** for Admin, Normal, and Premium users  
+🔐 **Firebase Authentication** (Email/Password & Google Login)  
+📋 Create, edit & view full biodata with detailed partner preferences  
+💳 **Stripe integration** for secure premium upgrades  
+📞 **Request contact info** (admin approval system)  
+❤️ Add biodatas to **Favorites** for quick access  
+🔍 Filter biodatas by **age, gender, division**  
+🎉 "Got Married" form with photo & success review  
+💫 **Framer Motion** and modals for stunning **animations**  
+🔒 All important pages are protected using **private routing**
+
+---
+
+## 🛠️ Tech Stack
+
+### 🌐 Frontend:
+
+- ⚛️ **React (v18)** + ⚡ **Vite**
+- 🎨 **Tailwind CSS v4**
+- 🧭 **React Router v7.6**
+- 🧩 **shadcn/ui** for clean UI components
+- 💬 **SweetAlert2** for popups and alerts
+- 🎞️ **Framer Motion** for animations
+- 📊 **React CountUp**, 🎯 **React Icons**
+
+### 🔄 State & API:
+
+- ⚡ **TanStack Query (React Query)**
+- 🔐 **Axios** with `useAxiosSecure` for protected API calls
+
+### 🔐 Authentication:
+
+- 🔥 **Firebase Auth** (Email/Password, Google Sign-In)
+
+### 🛠️ Backend:
+
+- 🟢 **Node.js** with **Express.js**
+- 🍃 **MongoDB** using native driver (not Mongoose)
+
+### 💳 Payments:
+
+- 💰 **Stripe** integration for secure transactions
+

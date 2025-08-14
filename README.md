@@ -30,7 +30,7 @@
 
 ### 🌐 Frontend:
 
-- ⚛️ **React (v18)** + ⚡ **Vite**
+- ⚛️ **React (v19)** + ⚡ **Vite**
 - 🎨 **Tailwind CSS v4**
 - 🧭 **React Router v7.6**
 - 🧩 **shadcn/ui** for clean UI components

@@ -1,11 +1,16 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 const ApprovedContactRequest = () => {
   const axiosSecure = useAxiosSecure();
 
-  const { data: requests = [], refetch } = useQuery({
+  const {
+    data: requests = [],
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["biodataContactRequests"],
     queryFn: async () => {
       const res = await axiosSecure.get("/biodatas/contact-requests");
@@ -26,6 +31,8 @@ const ApprovedContactRequest = () => {
       }
     },
   });
+
+  if (isLoading) return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <div>

@@ -85,134 +85,139 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#C2185B]/20 via-[#8E44AD]/20 to-[#C2185B]/10 px-4">
-      <div className="bg-white w-full max-w-md p-8 rounded-2xl shadow-lg">
-        <h1 className="text-4xl font-extrabold mb-8 text-[#C2185B] text-center">
-          Create Account
-        </h1>
+    <div>
+      <title>Find My Mate || Register</title>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#C2185B]/20 via-[#8E44AD]/20 to-[#C2185B]/10 px-4">
+        <div className="bg-white w-full max-w-md p-8 rounded-2xl shadow-lg">
+          <h1 className="text-4xl font-extrabold mb-8 text-[#C2185B] text-center">
+            Create Account
+          </h1>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Name */}
-          <div>
-            <label className="block font-semibold mb-2 text-[#8E44AD]">
-              Your Name
-            </label>
-            <input
-              type="text"
-              placeholder="Your Name"
-              {...register("name", { required: "Name is required" })}
-              className={`w-full px-4 py-3 border rounded-lg focus:outline-none transition ${
-                errors.name
-                  ? "border-red-500 focus:border-red-600"
-                  : "border-gray-300 focus:border-[#8E44AD]"
-              }`}
-            />
-            {errors.name && (
-              <p className="text-red-600 mt-1 text-sm">{errors.name.message}</p>
-            )}
-          </div>
-
-          {/* Profile Picture */}
-          <div>
-            <label className="block font-semibold mb-2 text-[#8E44AD]">
-              Profile Picture
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="w-full"
-            />
-            {profilePic && (
-              <img
-                src={profilePic}
-                alt="Profile Preview"
-                className="mt-3 w-24 h-24 rounded-full object-cover shadow-md border-2 border-[#C2185B]"
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Name */}
+            <div>
+              <label className="block font-semibold mb-2 text-[#8E44AD]">
+                Your Name
+              </label>
+              <input
+                type="text"
+                placeholder="Your Name"
+                {...register("name", { required: "Name is required" })}
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none transition ${
+                  errors.name
+                    ? "border-red-500 focus:border-red-600"
+                    : "border-gray-300 focus:border-[#8E44AD]"
+                }`}
               />
-            )}
-          </div>
+              {errors.name && (
+                <p className="text-red-600 mt-1 text-sm">
+                  {errors.name.message}
+                </p>
+              )}
+            </div>
 
-          {/* Email */}
-          <div>
-            <label className="block font-semibold mb-2 text-[#8E44AD]">
-              Email
-            </label>
-            <input
-              type="email"
-              placeholder="Email"
-              {...register("email", { required: "Email is required" })}
-              className={`w-full px-4 py-3 border rounded-lg focus:outline-none transition ${
-                errors.email
-                  ? "border-red-500 focus:border-red-600"
-                  : "border-gray-300 focus:border-[#8E44AD]"
-              }`}
-            />
-            {errors.email && (
-              <p className="text-red-600 mt-1 text-sm">
-                {errors.email.message}
-              </p>
-            )}
-          </div>
+            {/* Profile Picture */}
+            <div>
+              <label className="block font-semibold mb-2 text-[#8E44AD]">
+                Profile Picture
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="w-full"
+              />
+              {profilePic && (
+                <img
+                  src={profilePic}
+                  alt="Profile Preview"
+                  className="mt-3 w-24 h-24 rounded-full object-cover shadow-md border-2 border-[#C2185B]"
+                />
+              )}
+            </div>
 
-          {/* Password */}
-          <div>
-            <label className="block font-semibold mb-2 text-[#8E44AD]">
-              Password
-            </label>
-            <input
-              type="password"
-              placeholder="Password"
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
-                },
-              })}
-              className={`w-full px-4 py-3 border rounded-lg focus:outline-none transition ${
-                errors.password
-                  ? "border-red-500 focus:border-red-600"
-                  : "border-gray-300 focus:border-[#8E44AD]"
-              }`}
-            />
-            {errors.password && (
-              <p className="text-red-600 mt-1 text-sm">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
+            {/* Email */}
+            <div>
+              <label className="block font-semibold mb-2 text-[#8E44AD]">
+                Email
+              </label>
+              <input
+                type="email"
+                placeholder="Email"
+                {...register("email", { required: "Email is required" })}
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none transition ${
+                  errors.email
+                    ? "border-red-500 focus:border-red-600"
+                    : "border-gray-300 focus:border-[#8E44AD]"
+                }`}
+              />
+              {errors.email && (
+                <p className="text-red-600 mt-1 text-sm">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
 
-          {/* Forgot Password */}
-          <div className="text-right">
-            <Link
-              to="#"
-              className="text-sm text-[#C2185B] hover:underline font-medium"
+            {/* Password */}
+            <div>
+              <label className="block font-semibold mb-2 text-[#8E44AD]">
+                Password
+              </label>
+              <input
+                type="password"
+                placeholder="Password"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters",
+                  },
+                })}
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none transition ${
+                  errors.password
+                    ? "border-red-500 focus:border-red-600"
+                    : "border-gray-300 focus:border-[#8E44AD]"
+                }`}
+              />
+              {errors.password && (
+                <p className="text-red-600 mt-1 text-sm">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+
+            {/* Forgot Password */}
+            <div className="text-right">
+              <Link
+                to="#"
+                className="text-sm text-[#C2185B] hover:underline font-medium"
+              >
+                Forgot password?
+              </Link>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="w-full bg-[#C2185B] hover:bg-[#8E44AD] transition-colors text-white font-bold py-3 rounded-lg shadow-md"
             >
-              Forgot password?
+              Register
+            </button>
+          </form>
+          <div className="text-center py-4">OR</div>
+          <GoogleLogin></GoogleLogin>
+
+          {/* Link to Login */}
+          <p className="mt-6 text-center text-gray-600">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-[#C2185B] font-semibold hover:underline"
+            >
+              Login
             </Link>
-          </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-[#C2185B] hover:bg-[#8E44AD] transition-colors text-white font-bold py-3 rounded-lg shadow-md"
-          >
-            Register
-          </button>
-        </form>
-        <div className="text-center py-4">OR</div>
-        <GoogleLogin></GoogleLogin>
-
-        {/* Link to Login */}
-        <p className="mt-6 text-center text-gray-600">
-          Already have an account?{" "}
-          <Link
-            to="/login"
-            className="text-[#C2185B] font-semibold hover:underline"
-          >
-            Login
-          </Link>
-        </p>
+          </p>
+        </div>
       </div>
     </div>
   );

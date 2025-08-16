@@ -5,6 +5,7 @@ import {
   FaGithub,
 } from "react-icons/fa";
 import logo from "../assets/logo1.png";
+import { Link } from "react-router";
 
 const Footer = () => {
   return (
@@ -62,9 +63,9 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-[#FFDDEE] transition">
+              <Link to="/terms" className="hover:text-[#FFDDEE] transition">
                 Terms & Conditions
-              </a>
+              </Link>
             </li>
             <li>
               <a href="#" className="hover:text-[#FFDDEE] transition">
@@ -83,16 +84,32 @@ const Footer = () => {
         <div>
           <h3 className="text-xl font-semibold mb-3">Follow Us</h3>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-[#FFDDEE] transition text-xl">
+            <a
+              href="https://www.facebook.com/mujahidulislam.hridoy"
+              className="hover:text-[#FFDDEE] transition text-xl"
+              target="blank"
+            >
               <FaFacebookF />
             </a>
-            <a href="#" className="hover:text-[#FFDDEE] transition text-xl">
+            <a
+              href="https://www.instagram.com/mozahid_hridoy/"
+              className="hover:text-[#FFDDEE] transition text-xl"
+              target="blank"
+            >
               <FaInstagram />
             </a>
-            <a href="#" className="hover:text-[#FFDDEE] transition text-xl">
+            <a
+              href="https://www.linkedin.com/in/mozahidul-islam-hridoy/"
+              className="hover:text-[#FFDDEE] transition text-xl"
+              target="blank"
+            >
               <FaLinkedinIn />
             </a>
-            <a href="#" className="hover:text-[#FFDDEE] transition text-xl">
+            <a
+              href="https://github.com/MozahidHridoy24"
+              className="hover:text-[#FFDDEE] transition text-xl"
+              target="blank"
+            >
               <FaGithub />
             </a>
           </div>

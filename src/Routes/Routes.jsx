@@ -23,6 +23,7 @@ import AdminRoute from "./AdminRoute";
 import ErrorPage from "../components/ErrorPage";
 import AboutUs from "../pages/About/AboutUs";
 import Contact from "../pages/Contact/Contact";
+import Terms from "../pages/Legal/Terms";
 
 export const router = createBrowserRouter([
   {
@@ -55,6 +56,11 @@ export const router = createBrowserRouter([
         path: "contact",
         element: <Contact></Contact>,
       },
+      {
+        path: "terms",
+        element: <Terms></Terms>,
+      },
+
       {
         path: "/biodatas",
         element: <AllBiodatas></AllBiodatas>,

@@ -4,7 +4,9 @@ import { FaBan } from "react-icons/fa";
 
 const Forbidden = () => {
   return (
-    <div className="min-h-screen w-11/12 mx-auto flex flex-col items-center justify-center text-center px-6">
+    <div>
+      <title>Forbidden</title>
+      <div className="min-h-screen w-11/12 mx-auto flex flex-col items-center justify-center text-center px-6">
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
@@ -46,6 +48,7 @@ const Forbidden = () => {
           ⬅ Back to Home
         </Link>
       </motion.div>
+    </div>
     </div>
   );
 };

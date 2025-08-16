@@ -89,7 +89,7 @@ const Navbar = () => {
   return (
     <>
       {/* Navbar */}
-      <nav className="bg-rose-100 border-b border-gray-200 shadow sticky top-0 z-[1000]">
+      <nav className="bg-white border-b border-gray-200 shadow sticky top-0 z-[1000]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Mobile menu icon */}

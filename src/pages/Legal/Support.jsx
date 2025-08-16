@@ -16,7 +16,7 @@ const Support = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Support form submitted:", formData);
+    // console.log("Support form submitted:", formData);
 
     // SweetAlert popup
     Swal.fire({

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -15,9 +16,19 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Here you can integrate EmailJS, FormSubmit, or send to your backend
-    alert("Thanks for contacting us! We'll get back to you shortly.");
+    // console.log("Form submitted:", formData);
+
+    // SweetAlert popup
+    Swal.fire({
+      icon: "success",
+      title: "Message Sent!",
+      text: "Thanks for contacting us! We'll get back to you shortly.",
+      confirmButtonColor: "#C2185B",
+      timer: 2000, // auto-close after 2 seconds
+      timerProgressBar: true,
+    });
+
+    // Reset form
     setFormData({ name: "", email: "", message: "" });
   };
 
@@ -35,7 +46,7 @@ const Contact = () => {
           >
             Contact <span className="text-[#8E44AD]">Us</span>
           </motion.h2>
-          <p className="text-center text-gray-700  mb-12 max-w-2xl mx-auto">
+          <p className="text-center text-gray-700 mb-12 max-w-2xl mx-auto">
             We'd love to hear from you. Whether you have a question about
             features, pricing, feedback, or anything else — our team is ready to
             answer!
@@ -69,7 +80,7 @@ const Contact = () => {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
               onSubmit={handleSubmit}
-              className="bg-white  shadow-xl rounded-xl p-8 space-y-6 border border-[#C2185B]"
+              className="bg-white shadow-xl rounded-xl p-8 space-y-6 border border-[#C2185B]"
             >
               <input
                 type="text"
@@ -78,7 +89,7 @@ const Contact = () => {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Your Name"
-                className="w-full px-4 py-3 rounded-md border focus:outline-none border-[#C2185B] "
+                className="w-full px-4 py-3 rounded-md border focus:outline-none border-[#C2185B]"
               />
               <input
                 type="email"
@@ -87,7 +98,7 @@ const Contact = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Your Email"
-                className="w-full px-4 py-3 rounded-md border focus:outline-none border-[#8E44AD] "
+                className="w-full px-4 py-3 rounded-md border focus:outline-none border-[#8E44AD]"
               />
               <textarea
                 name="message"
@@ -96,7 +107,7 @@ const Contact = () => {
                 onChange={handleChange}
                 rows={5}
                 placeholder="Your Message"
-                className="w-full px-4 py-3 rounded-md border focus:outline-none border-[#C2185B] "
+                className="w-full px-4 py-3 rounded-md border focus:outline-none border-[#C2185B]"
               />
               <button
                 type="submit"

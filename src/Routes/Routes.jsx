@@ -24,6 +24,7 @@ import ErrorPage from "../components/ErrorPage";
 import AboutUs from "../pages/About/AboutUs";
 import Contact from "../pages/Contact/Contact";
 import Terms from "../pages/Legal/Terms";
+import FAQ from "../pages/Legal/FAQ";
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
       {
         path: "terms",
         element: <Terms></Terms>,
+      },
+      {
+        path: "faq",
+        element: <FAQ></FAQ>,
       },
 
       {

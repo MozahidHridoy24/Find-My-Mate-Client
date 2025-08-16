@@ -68,9 +68,9 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <a href="#" className="hover:text-[#FFDDEE] transition">
+              <Link to="/faq" className="hover:text-[#FFDDEE] transition">
                 FAQ
-              </a>
+              </Link>
             </li>
             <li>
               <a href="#" className="hover:text-[#FFDDEE] transition">

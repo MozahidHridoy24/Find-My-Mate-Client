@@ -10,7 +10,7 @@ import { Link } from "react-router";
 const Footer = () => {
   return (
     <footer className="bg-[#C2185B] text-white pt-10 pb-6 px-6 md:px-12">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="w-11/12 mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Logo & Description */}
         <div>
           <div className="flex items-center gap-2">
@@ -73,9 +73,9 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <a href="#" className="hover:text-[#FFDDEE] transition">
+              <Link to="/support" className="hover:text-[#FFDDEE] transition">
                 Support
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

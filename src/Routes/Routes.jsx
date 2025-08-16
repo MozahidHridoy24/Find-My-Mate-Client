@@ -25,6 +25,7 @@ import AboutUs from "../pages/About/AboutUs";
 import Contact from "../pages/Contact/Contact";
 import Terms from "../pages/Legal/Terms";
 import FAQ from "../pages/Legal/FAQ";
+import Support from "../pages/Legal/Support";
 
 export const router = createBrowserRouter([
   {
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
       {
         path: "faq",
         element: <FAQ></FAQ>,
+      },
+      {
+        path: "support",
+        element: <Support></Support>,
       },
 
       {

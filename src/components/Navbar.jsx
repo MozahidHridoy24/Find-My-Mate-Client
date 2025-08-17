@@ -123,13 +123,13 @@ const Navbar = () => {
                 <>
                   <NavLink
                     to="/login"
-                    className="px-2 py-2 rounded-lg border-2 border-rose-700 text-rose-700 font-semibold hover:bg-rose-700 hover:text-white transition"
+                    className="px-2 py-1 rounded-lg border-2 border-rose-700 text-rose-700 font-semibold hover:bg-rose-700 hover:text-white transition"
                   >
                     Login
                   </NavLink>
                   <NavLink
                     to="/register"
-                    className="px-2 py-2 rounded-lg bg-purple-700 text-white font-semibold hover:bg-purple-800 transition"
+                    className="px-2 py-1 rounded-lg bg-purple-700 text-white font-semibold hover:bg-purple-800 transition"
                   >
                     Register
                   </NavLink>

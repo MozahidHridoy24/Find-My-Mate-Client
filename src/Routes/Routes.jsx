@@ -26,6 +26,7 @@ import Contact from "../pages/Contact/Contact";
 import Terms from "../pages/Legal/Terms";
 import FAQ from "../pages/Legal/FAQ";
 import Support from "../pages/Legal/Support";
+import Privacy from "../pages/Legal/Privacy";
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ export const router = createBrowserRouter([
       {
         path: "support",
         element: <Support></Support>,
+      },
+      {
+        path: "privacy",
+        element: <Privacy></Privacy>,
       },
 
       {

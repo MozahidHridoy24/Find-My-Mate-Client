@@ -58,9 +58,9 @@ const Footer = () => {
           <h3 className="text-xl font-semibold mb-3">About</h3>
           <ul className="space-y-2 text-sm">
             <li>
-              <a href="#" className="hover:text-[#FFDDEE] transition">
+              <Link to="/privacy" className="hover:text-[#FFDDEE] transition">
                 Privacy Policy
-              </a>
+              </Link>
             </li>
             <li>
               <Link to="/terms" className="hover:text-[#FFDDEE] transition">
@@ -118,7 +118,7 @@ const Footer = () => {
 
       {/* Bottom Line */}
       <div className="mt-8 border-t border-white/20 pt-4 text-sm text-center">
-        &copy; {new Date().getFullYear()} Matrimony. All rights reserved.
+        &copy; {new Date().getFullYear()} Find My Mate. All rights reserved.
       </div>
     </footer>
   );
